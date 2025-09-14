@@ -6,6 +6,14 @@
     <title>Completing the Square Problem</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax = {
+            tex: {
+            inlineMath: [['$', '$'], ["\\(", "\\)"]],
+            processEscapes: true,
+            }
+        }
+    </script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -52,7 +60,7 @@
 </head>
 <body>
 
-    <div class="container"><div class="math-display">
+    <div class="container">
         <h2>The Question 📝</h2>
         <p>
             Solve the quadratic equation $2x^2 + 6x - 7 = 0$ by completing the square.
@@ -78,7 +86,7 @@
 
         <h3>Step 2: Make the Coefficient of $x^2$ Equal to 1</h3>
         <p>
-            The method of completing the square requires the coefficient of the <div class="math-display">$x^2$</div> term to be 1. To achieve this, divide every term in the equation by the current coefficient of $x^2$, which is <strong>2</strong>.
+            The method of completing the square requires the coefficient of the $x^2$ term to be 1. To achieve this, divide every term in the equation by the current coefficient of $x^2$, which is <strong>2</strong>.
         </p>
         <div class="math-display">
             $$\frac{2x^2}{2} + \frac{6x}{2} = \frac{7}{2}$$
