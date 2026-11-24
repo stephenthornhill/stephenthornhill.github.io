@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A World AIDS Day escape room for medical grand round</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#e9eff3;
+  --panel:#ffffff;
+  --panel-2:#f2f6f9;
+  --ink:#12222d;
+  --muted:#52626f;
+  --line:#c9d6df;
+  --sign:#12508f;
+  --sign-ink:#ffffff;
+  --sign-tint:#dbe8f5;
+  --ribbon:#c8102e;
+  --ribbon-ink:#ffffff;
+  --ok:#17794a;
+  --ok-bg:#e0f2e8;
+  --bad:#a92f1a;
+  --bad-bg:#fbe6e1;
+  --font-head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0c1822;
+    --panel:#13232f;
+    --panel-2:#192d3b;
+    --ink:#e8f0f5;
+    --muted:#9db0bd;
+    --line:#2a4252;
+    --sign:#2b72bd;
+    --sign-ink:#ffffff;
+    --sign-tint:#18344b;
+    --ribbon:#ff3b58;
+    --ribbon-ink:#ffffff;
+    --ok:#62d697;
+    --ok-bg:#12341f;
+    --bad:#ff8f78;
+    --bad-bg:#3a1c16;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0c1822;
+  --panel:#13232f;
+  --panel-2:#192d3b;
+  --ink:#e8f0f5;
+  --muted:#9db0bd;
+  --line:#2a4252;
+  --sign:#2b72bd;
+  --sign-ink:#ffffff;
+  --sign-tint:#18344b;
+  --ribbon:#ff3b58;
+  --ribbon-ink:#ffffff;
+  --ok:#62d697;
+  --ok-bg:#12341f;
+  --bad:#ff8f78;
+  --bad-bg:#3a1c16;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;min-height:100%;
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:1.0625rem;line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1,h2,h3{font-family:var(--font-head);line-height:1.12;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800}
+h2{font-size:clamp(1.5rem,3.6vw,2.1rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 1em;max-width:68ch}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+:root[data-theme="dark"] :focus-visible{outline-color:#8ec0f5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) :focus-visible{outline-color:#8ec0f5}}
+
+/* top bar */
+.top{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:var(--bg);border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;
+  padding:.65rem clamp(1rem,4vw,2rem);
+}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-head);font-weight:800;font-size:1.05rem}
+.ribbon-mark{width:1.5rem;height:1.5rem;flex:none}
+.stats{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;margin-left:auto;font-size:.95rem;color:var(--muted)}
+.stats strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.rack{display:flex;gap:.3rem}
+.rack span{
+  width:1.9rem;height:2.2rem;display:grid;place-items:center;
+  border:2px dashed var(--line);border-radius:.35rem;
+  font-family:var(--font-head);font-weight:800;font-size:1.15rem;color:var(--muted);
+}
+.rack span.on{border:2px solid var(--ribbon);background:var(--ribbon);color:var(--ribbon-ink)}
+.hidden{display:none !important}
+
+main{max-width:62rem;margin:0 auto;padding:clamp(1.25rem,4vw,2.5rem) clamp(1rem,4vw,2rem) 3rem}
+main:focus{outline:none}
+
+/* intro */
+.hero{display:grid;gap:1.75rem;margin-bottom:2rem}
+.hero .lede{font-size:1.2rem;max-width:56ch}
+.signboard{
+  background:var(--sign);color:var(--sign-ink);border-radius:.6rem;
+  padding:clamp(1.25rem,4vw,2.25rem);
+  border-left:.7rem solid var(--ribbon);
+}
+.signboard h1{margin-bottom:.35em}
+.signboard p{margin-bottom:0;opacity:.95}
+.rules{background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:1.25rem 1.5rem}
+.rules ul{margin:0;padding-left:1.25rem}
+.rules li{margin:.35rem 0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--sign);color:var(--sign-ink);border:0;border-radius:.5rem;
+  padding:.8rem 1.4rem;font-weight:700;font-size:1.05rem;min-height:2.9rem;
+}
+.btn:hover{filter:brightness(1.1)}
+.btn.ribbon{background:var(--ribbon);color:var(--ribbon-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.linkbtn{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;font-size:.95rem}
+
+/* corridor */
+.corridor{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:.9rem;margin:1.25rem 0 1.75rem}
+.door{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;text-align:left;
+  background:var(--panel);border:2px solid var(--line);border-radius:.6rem;padding:.8rem 1rem .8rem .8rem;
+}
+.door:hover{border-color:var(--sign)}
+.plate{
+  width:3.4rem;height:3.4rem;border-radius:.4rem;background:var(--sign);color:var(--sign-ink);
+  display:grid;place-items:center;font-family:var(--font-head);font-weight:800;font-size:1.7rem;
+}
+.door .name{font-family:var(--font-head);font-weight:800;font-size:1.15rem;line-height:1.2;display:block}
+.door .sub{color:var(--muted);font-size:.95rem;display:block}
+.door .state{font-size:1.5rem;line-height:1}
+.door.solved{border-color:var(--ok);background:var(--ok-bg)}
+.door.locked{opacity:.6;cursor:not-allowed}
+.door.locked:hover{border-color:var(--line)}
+.door.next{border-color:var(--ribbon)}
+.door.solved .plate{background:var(--ok);color:#fff}
+:root[data-theme="dark"] .door.solved .plate{color:#06210f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .door.solved .plate{color:#06210f}}
+
+.finale{
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;justify-content:space-between;
+  background:var(--panel);border:2px solid var(--line);border-radius:.6rem;padding:1.1rem 1.4rem;
+}
+.finale p{margin:0}
+.chat-head{display:flex;gap:1rem;align-items:center;margin-bottom:.8rem}
+.chat-head h3{margin-bottom:.2rem}
+.chat-head p{margin:0;color:var(--muted)}
+.avatar{flex:none;width:5.5rem;height:5.5rem}
+.avatar svg{display:block;width:100%;height:100%;border-radius:50%;border:2px solid var(--line)}
+.log{display:grid;gap:.5rem;max-height:20rem;overflow:auto;padding:.7rem;background:var(--panel-2);border:1px solid var(--line);border-radius:.6rem}
+.msg{display:flex}
+.msg span{max-width:85%;padding:.5rem .85rem;border-radius:1rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.him span{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:.25rem}
+.msg.me{justify-content:flex-end}
+.msg.me span{background:var(--sign);color:var(--sign-ink);border-bottom-right-radius:.25rem}
+.chat-input{display:flex;gap:.6rem;margin-top:.8rem}
+.chat-input input{flex:1;min-width:0}
+.chat-tools{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:center;margin-top:.7rem}
+.tts{display:flex;gap:.45rem;align-items:center;font-size:.95rem}
+.notice{margin:.8rem 0 0;font-size:.9rem;color:var(--muted);max-width:none}
+.feedback{margin-top:.9rem;background:var(--sign-tint);border-left:.35rem solid var(--sign);border-radius:.3rem;padding:.7rem 1rem}
+.feedback p{margin:.4rem 0 0}
+.scroll{overflow-x:auto;margin:.5rem 0 0}
+.labs{width:100%;border-collapse:collapse;font-size:.95rem;min-width:19rem}
+.labs th,.labs td{text-align:left;padding:.3rem .6rem;border-bottom:1px solid var(--line)}
+.labs th{font-family:var(--font-head);font-weight:700}
+.labs td.hi{color:var(--bad);font-weight:700}
+.labs td.lo{color:var(--sign);font-weight:700}
+:root[data-theme="dark"] .labs td.lo{color:#8ec0f5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .labs td.lo{color:#8ec0f5}}
+.xray{margin:1rem 0;max-width:24rem}
+.xray svg{display:block;width:100%;height:auto;border-radius:.5rem;border:1px solid var(--line);background:#08080a}
+.xray figcaption{font-size:.9rem;color:var(--muted);margin-top:.4rem;max-width:none}
+.patient{background:var(--panel);border:1px solid var(--line);border-left:.45rem solid var(--ribbon);border-radius:.6rem;padding:1rem 1.25rem}
+.patient p{margin:.25rem 0 0}
+.story{margin:.7rem 0 0;padding-left:1.2rem;color:var(--ok);font-weight:700}
+.story li{margin:.2rem 0}
+a{color:var(--sign);font-weight:700}
+:root[data-theme="dark"] a{color:#8ec0f5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) a{color:#8ec0f5}}
+.finale.ready{border-color:var(--ribbon)}
+
+/* room */
+.crumb{margin-bottom:1rem}
+.room-head{display:flex;gap:1.1rem;align-items:center;margin-bottom:1.25rem}
+.room-head .plate{width:4.2rem;height:4.2rem;font-size:2.2rem;flex:none}
+.room-head h2{margin:0}
+.room-head .sub{color:var(--muted);margin:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:1.25rem 1.4rem;margin-bottom:1.25rem}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:.7rem;margin:.75rem 0}
+.tile{
+  display:grid;gap:.25rem;justify-items:center;text-align:center;
+  background:var(--panel-2);border:2px solid var(--line);border-radius:.6rem;padding:.9rem .5rem;
+}
+.tile .em{font-size:2.3rem;line-height:1}
+.tile .lab{font-size:.95rem;font-weight:700}
+.tile:hover{border-color:var(--sign)}
+.tile.on{border-color:var(--sign);background:var(--sign-tint)}
+.tile.seen .lab::after{content:" ✓";color:var(--ok)}
+.clue{
+  min-height:3.5rem;background:var(--sign-tint);border-left:.35rem solid var(--sign);
+  border-radius:.3rem;padding:.8rem 1rem;margin-top:.5rem;
+}
+.clue p{margin:0}
+.clue.empty{background:transparent;border-left-color:var(--line);color:var(--muted)}
+
+.stage{border:2px solid var(--line);border-radius:.6rem;padding:1rem 1.1rem;margin:0 0 1rem;background:var(--panel-2)}
+.stage.ok{border-color:var(--ok)}
+.stage.bad{border-color:var(--bad);background:var(--bad-bg)}
+.stage h3{margin-bottom:.7rem}
+.stage-note{margin:.6rem 0 0;font-weight:700;color:var(--bad)}
+.stage.ok .stage-note{color:var(--ok)}
+.opts{display:grid;gap:.5rem}
+.opt{
+  text-align:left;background:var(--panel);border:2px solid var(--line);border-radius:.5rem;
+  padding:.65rem .9rem;display:flex;gap:.7rem;align-items:flex-start;min-height:2.8rem;
+}
+.opt:hover:not([disabled]){border-color:var(--sign)}
+.opt .box{
+  flex:none;width:1.2rem;height:1.2rem;margin-top:.2rem;border:2px solid var(--muted);border-radius:50%;
+}
+.opt.multi .box{border-radius:.25rem}
+.opt.sel{border-color:var(--sign);background:var(--sign-tint)}
+.opt.sel .box{background:var(--sign);border-color:var(--sign);box-shadow:inset 0 0 0 3px var(--sign-tint)}
+.opt[disabled]{cursor:default}
+.seq{display:grid;gap:.4rem;margin:.2rem 0 .8rem;counter-reset:s}
+.seq .slot{
+  display:flex;align-items:center;gap:.7rem;min-height:2.6rem;
+  border:2px dashed var(--line);border-radius:.5rem;padding:.4rem .8rem;background:var(--panel);
+}
+.seq .slot.fill{border-style:solid;border-color:var(--sign);background:var(--sign-tint)}
+.seq .n{font-family:var(--font-head);font-weight:800;width:1.5rem;color:var(--muted)}
+.pool{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.chip{background:var(--panel);border:2px solid var(--line);border-radius:2rem;padding:.45rem .95rem}
+.chip:hover:not([disabled]){border-color:var(--sign)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:.5rem 1rem;align-items:center;padding:.5rem 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row label{font-weight:700}
+select,input[type=number],input[type=text]{
+  width:100%;min-height:2.7rem;padding:.45rem .7rem;border:2px solid var(--line);border-radius:.5rem;background:var(--panel);
+}
+@media (max-width:34rem){.row{grid-template-columns:1fr}}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:1rem}
+.fb{margin:.9rem 0 0;font-weight:700;min-height:1.5rem}
+.fb.bad{color:var(--bad)}
+.hints{margin-top:1rem;border-top:1px solid var(--line);padding-top:.9rem}
+.hint{background:var(--panel-2);border-left:.35rem solid var(--ribbon);padding:.55rem .9rem;border-radius:.3rem;margin:.5rem 0}
+
+.win-letter{
+  display:inline-grid;place-items:center;width:4.6rem;height:5.4rem;border-radius:.5rem;
+  background:var(--ribbon);color:var(--ribbon-ink);font-family:var(--font-head);font-weight:800;font-size:3rem;
+  animation:stamp .5s cubic-bezier(.2,.9,.3,1.2) both;
+}
+@keyframes stamp{from{transform:scale(1.8) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion: reduce){.win-letter{animation:none}}
+.solved-box{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center}
+.solved-box .txt{flex:1 1 18rem}
+.solved-box .txt p{margin-bottom:.6rem}
+.badge{display:inline-block;background:var(--ok-bg);color:var(--ok);font-weight:700;border-radius:2rem;padding:.15rem .8rem;margin-bottom:.6rem}
+
+/* door */
+.letters{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0 1.4rem}
+.ltile{display:grid;justify-items:center;gap:.2rem;font-size:.85rem;color:var(--muted)}
+.ltile b{
+  display:grid;place-items:center;width:3.4rem;height:4rem;border-radius:.45rem;
+  background:var(--ribbon);color:var(--ribbon-ink);font-family:var(--font-head);font-size:2.1rem;font-weight:800;
+}
+.codein{max-width:22rem;font-family:var(--font-head);font-weight:800;font-size:1.8rem;letter-spacing:.35em;text-transform:uppercase;text-align:center}
+details{background:var(--panel);border:1px solid var(--line);border-radius:.5rem;padding:.6rem 1rem;margin:.5rem 0}
+summary{cursor:pointer;font-weight:700}
+details p{margin:.6rem 0 0}
+.stat-row{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0 1.5rem}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:.8rem 1.2rem}
+.stat b{display:block;font-family:var(--font-head);font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums}
+
+footer{max-width:62rem;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 2rem;color:var(--muted);font-size:.95rem}
+.overlay{position:fixed;inset:0;background:rgba(5,12,18,.7);z-index:50;display:grid;place-items:center;padding:1rem}
+.modal{background:var(--panel);color:var(--ink);border-radius:.7rem;max-width:42rem;width:100%;max-height:85vh;overflow:auto;padding:1.4rem 1.6rem}
+.modal li{margin:.5rem 0}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg class="ribbon-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c-3.6 0-6.4 2.7-6.4 6.1 0 2.4 1.2 4.1 2.7 6.2L6 27l4.4.7L16 18.5l5.6 10.2L26 27l-6.3-12.7c1.5-2.1 2.7-3.8 2.7-6.2C22.4 4.7 19.6 2 16 2zm0 3.4c1.7 0 3 1.2 3 2.7 0 1.1-.7 2.1-1.8 3.7L16 13.6l-1.2-1.8C13.7 10.2 13 9.2 13 8.1c0-1.5 1.3-2.7 3-2.7z" fill="#c8102e"/></svg>
+    <span>Locked in</span>
+  </div>
+  <div class="stats hidden" id="stats">
+    <span>Time <strong id="timer">00:00</strong></span>
+    <span>Hints <strong id="hintcount">0</strong></span>
+    <span>Rooms <strong id="roomcount">0</strong>/8</span>
+    <div class="rack" id="rack" aria-label="Collected letters"></div>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer>
+  <p><button type="button" class="btn ghost hidden" id="cbtn" data-act="comment">Comment on this page</button></p>
+  <p>Every case in this game is fictional. No real patient, staff or service data is used. <button type="button" class="linkbtn" data-act="key">Facilitator answer key</button> <button type="button" class="linkbtn" data-act="review">Review mode (unlock all rooms)</button></p>
+</footer>
+
+<div id="modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title"></div>
+
+<script>
+"use strict";
+
+/* ---------- Game content ---------- */
+const FINAL_WORD = "UNLOCKED";
+
+const PATIENT = {
+  title: "Mr A, 44 (fictional)",
+  summary: "Admitted to the medical wards with six weeks of fever, night sweats, weight loss and a dry cough. No regular medicines. You are the medical registrar looking after him."
+};
+
+const ROOMS = [
+  {
+    id: 1, name: "Acute medical unit", icon: "🏥", sub: "", letter: "U", pos: 1,
+    story: "Offered an HIV test with verbal consent.",
+    intro: "Mr A has just been admitted with six weeks of fever, night sweats and weight loss. The bloods trolley is at the end of his bed. Look at what you already know about him, and check it against the BHIVA indicator condition list.",
+    objects: [
+      { icon: "📋", label: "GP summary", text: "Shingles in one dermatome eight months ago. No regular medicines. Non-smoker. Works as an accountant." },
+      { icon: "👄", label: "Examination", text: "Temperature 38.1 °C. Oral candidiasis: white plaques on the tongue and palate. Weight down 8 kg in two months. No lymphadenopathy. Fine crackles at both bases.", figure: "candida" },
+      { icon: "🩸", label: "Bloods trolley", html: `<p><strong>Bloods trolley:</strong> admission results. H = high, L = low.</p>
+        <div class="scroll"><table class="labs">
+          <thead><tr><th>Test</th><th>Result</th><th>Reference</th></tr></thead>
+          <tbody>
+            <tr><td>Haemoglobin</td><td class="lo">108 g/L (L)</td><td>130–180</td></tr>
+            <tr><td>White cell count</td><td class="lo">3.1 ×10⁹/L (L)</td><td>4.0–11.0</td></tr>
+            <tr><td>Neutrophils</td><td>2.0 ×10⁹/L</td><td>2.0–7.5</td></tr>
+            <tr><td>Lymphocytes</td><td class="lo">0.6 ×10⁹/L (L)</td><td>1.0–4.0</td></tr>
+            <tr><td>Platelets</td><td>245 ×10⁹/L</td><td>150–400</td></tr>
+            <tr><td>Sodium</td><td>136 mmol/L</td><td>133–146</td></tr>
+            <tr><td>Potassium</td><td>4.2 mmol/L</td><td>3.5–5.3</td></tr>
+            <tr><td>Urea</td><td>5.0 mmol/L</td><td>2.5–7.8</td></tr>
+            <tr><td>Creatinine</td><td>84 µmol/L</td><td>59–104</td></tr>
+            <tr><td>eGFR</td><td>94 mL/min/1.73 m²</td><td>above 90</td></tr>
+            <tr><td>Adjusted calcium</td><td>2.25 mmol/L</td><td>2.20–2.60</td></tr>
+            <tr><td>Bilirubin</td><td>9 µmol/L</td><td>0–21</td></tr>
+            <tr><td>ALT</td><td>41 U/L</td><td>0–50</td></tr>
+            <tr><td>ALP</td><td>118 U/L</td><td>30–130</td></tr>
+            <tr><td>Total protein</td><td class="hi">92 g/L (H)</td><td>60–80</td></tr>
+            <tr><td>Albumin</td><td class="lo">32 g/L (L)</td><td>35–50</td></tr>
+            <tr><td>Globulin</td><td class="hi">60 g/L (H)</td><td>20–35</td></tr>
+            <tr><td>CRP</td><td class="hi">98 mg/L (H)</td><td>0–5</td></tr>
+          </tbody></table></div>` },
+      { icon: "📖", label: "BHIVA guideline", html: `<p><strong>BHIVA guideline:</strong> the BHIVA/BASHH/BIA adult HIV testing guidelines 2020 list indicator conditions (Appendix 1) that are linked to an undiagnosed HIV prevalence of at least 1 per 1,000. Anyone presenting with one should be recommended an HIV test.</p>` }
+    ],
+    stages: [
+      { type: "multi", q: "Which findings in Mr A match an HIV indicator condition on the BHIVA/BASHH/BIA 2020 list?",
+        options: [
+          "Shingles (herpes zoster) eight months ago",
+          "Oral candidiasis with no obvious cause",
+          "Unexplained weight loss (8 kg in two months)",
+          "Unexplained fever for six weeks",
+          "A low white cell count (leukocytopenia) with no obvious cause",
+          "He is 44 years old",
+          "He is a non-smoker",
+          "He has a normal platelet count",
+          "He works as an accountant"
+        ],
+        answers: [0, 1, 2, 3, 4] },
+      { type: "mcq", q: "What do the BHIVA/BASHH/BIA guidelines recommend when a patient presents with an indicator condition?",
+        options: [
+          "Recommend an HIV test in any healthcare setting, and repeat the offer at a later visit if he declines",
+          "Test only if he first discloses a risk factor",
+          "Test only in sexual health clinics",
+          "Test only if he has two or more indicator conditions"
+        ], answer: 0 },
+      { type: "mcq", q: "How should you offer the test?",
+        options: [
+          "As a routine blood test: make sure he knows he is being tested and how he will get the result. Lengthy pre-test discussion is not needed",
+          "Only after a specialist counselling session and written consent",
+          "Without telling him, because he is acutely unwell",
+          "Only if he first tells you about a risk factor",
+          "Wait until the day of discharge"
+        ], answer: 0 }
+    ],
+    hints: [
+      "Look for conditions on the BHIVA list (Appendix 1): think skin, mouth, weight, fever and blood counts.",
+      "Age, smoking status and occupation are not on the list."
+    ],
+    teaching: "Cross-reference with the BHIVA/BASHH/BIA adult HIV testing guidelines 2020, Appendix 1, Table A2. Herpes zoster is Grade 1C. Unexplained leukocytopenia lasting more than 4 weeks is Grade 1C: Mr A has been unwell for six weeks and a low count that persists on repeat meets this. Unexplained oral candidiasis, unexplained weight loss and unexplained fever are each Grade 1D. A raised total protein with a raised globulin is a useful supporting clue, but it is not itself on the list. Age, smoking status and occupation are not indicators and should never decide who you test. Anyone presenting with an indicator condition in any healthcare setting should be recommended an HIV test, with a repeat offer at a later visit if they decline. Any doctor or nurse can offer the test: the patient needs to know they are being tested and how they will get the result, and lengthy pre-test discussion is not required. In areas of high diagnosed prevalence (2 to 5 per 1,000) everyone having venepuncture should be tested; in extremely high prevalence areas (above 5 per 1,000) all attendees. Mr A’s shingles eight months earlier was a missed chance to test.",
+    key: "Select (BHIVA 2020 Appendix 1 Table A2): herpes zoster (1C), unexplained oral candidiasis (1D), unexplained weight loss (1D), unexplained fever (1D), unexplained leukocytopenia over 4 weeks (1C). Not: age, non-smoker, normal platelets, occupation. Recommend a test for any indicator condition, with a repeat offer if declined. Offer routinely: patient aware, no lengthy pre-test discussion."
+  },
+  {
+    id: 2, name: "Ward evidence room", icon: "💬", sub: "Escape the myths", letter: "K", pos: 6,
+    story: "Myths and stigma on the ward challenged.",
+    intro: "Mr A has been on the ward overnight and the staff WhatsApp group is already lighting up with guesses about the new patient with thrush, fever and weight loss. Before you can help him escape the hospital, you have to escape the myths. Read the evidence and separate fact from fiction.",
+    objects: [
+      { icon: "💬", label: "Ward WhatsApp group", text: "“He must be gay then.” “Poor thing, how long do you think he’s got?” “Isn’t that AIDS? Don’t let him share a cup.” “I’m pregnant, should I even go in?”" },
+      { icon: "📰", label: "Treatment news", text: "People who are diagnosed in good time and take effective treatment can expect a near-normal lifespan. Women, heterosexual people and older people are often missed because nobody thinks to test them." },
+      { icon: "📜", label: "Timeline", text: "AIDS was first recognised in 1981 and the virus that causes it was identified two years later. Combination treatment transformed outcomes from the mid-1990s." }
+    ],
+    stages: [
+      { type: "multi", q: "Which of these messages are myths?",
+        options: [
+          "“He must be gay then.”",
+          "“Poor thing, how long do you think he’s got?”",
+          "“HIV and AIDS are the same thing.”",
+          "“I’m pregnant. I shouldn’t go into his room.”",
+          "“Don’t let him share a cup or cutlery, just in case.”",
+          "“Treatment now lets people with HIV live a near-normal lifespan.”",
+          "“Standard infection control precautions are enough for HIV.”",
+          "“Anyone can get HIV, including women, heterosexual people and older people.”",
+          "“We need his consent before we tell anyone else.”"
+        ],
+        answers: [0, 1, 2, 3, 4] },
+      { type: "mcq", q: "Which phrase is best practice?",
+        options: ["“They’re a person living with HIV”", "“He’s an AIDS patient”", "“She’s a HIV carrier”", "“He’s HIV positive”"], answer: 0 },
+      { type: "mcq", q: "What is the difference between HIV and AIDS?",
+        options: [
+          "HIV is the virus. AIDS describes advanced immune damage, and is largely preventable with early diagnosis and treatment",
+          "They are the same thing",
+          "AIDS is the virus and HIV is the illness it causes",
+          "AIDS only affects gay men"
+        ], answer: 0 },
+      { type: "mcq", q: "What is wrong with speculating about Mr A’s possible diagnosis on the ward WhatsApp group?",
+        options: [
+          "It breaches confidentiality: information is shared only with staff directly involved in his care, using approved systems",
+          "Nothing, because everyone on the ward is a colleague",
+          "Only the language needs changing",
+          "Nothing, as long as his name is left out"
+        ], answer: 0 },
+      { type: "mcq", q: "When was the virus that causes AIDS identified?",
+        options: ["1983, two years after AIDS was first recognised", "1963", "1995", "2005"], answer: 0 }
+    ],
+    hints: [
+      "Five of the nine messages are myths. Think about who gets HIV, how it spreads and how long people live.",
+      "Pregnant staff can care for patients with HIV using standard precautions."
+    ],
+    teaching: "HIV is the virus; AIDS is the advanced stage, and is largely preventable with early diagnosis and treatment. Anyone can acquire HIV, and women, heterosexual people and older people are often diagnosed late because no one thinks of it. HIV is not spread by sharing cups or cutlery or by routine care, and pregnant staff can look after people with HIV using standard precautions. People on effective treatment can expect a near-normal lifespan. Say “person living with HIV”, and never share or speculate about a patient’s diagnosis on a WhatsApp group.",
+    key: "Myths: he must be gay, how long has he got, HIV equals AIDS, pregnant staff should not go in, no shared cups. Best phrase: person living with HIV. HIV is the virus, AIDS the advanced stage. WhatsApp breaches confidentiality. Virus identified 1983."
+  },
+  {
+    id: 3, name: "Respiratory bay", icon: "🫁", sub: "Breathless on the ward", letter: "D", pos: 8, figure: "cxr",
+    story: "Sepsis pathway followed and Pneumocystis pneumonia treated.",
+    intro: "Overnight Mr A deteriorates. His NEWS2 is 7 and he is feverish. His saturation is 94% at rest on air but falls to 88% after he walks to the toilet. The nurse in charge asks what to do, and what is going on.",
+    objects: [
+      { icon: "🩻", label: "Chest X-ray", text: "Bilateral, symmetrical perihilar interstitial shadowing. No effusion and no lobar consolidation." },
+      { icon: "📈", label: "Observation chart", text: "Respiratory rate 22. SpO₂ 94% on air at rest, 88% on walking. Heart rate 112. Blood pressure 106/64. Temperature 38.4 °C. Alert. NEWS2 total 7." },
+      { icon: "🧪", label: "Results", text: "Arterial blood gas on air: PaO₂ 8.4 kPa. LDH 820 U/L (markedly raised). CRP 98 mg/L (raised)." }
+    ],
+    stages: [
+      { type: "mcq", q: "Mr A’s NEWS2 is 7 with a temperature of 38.4 °C. What is your next step?",
+        options: [
+          "Follow your normal ABCDE and sepsis pathway and escalate as you would for any patient",
+          "Wait for the HIV team to review him",
+          "Delay antibiotics until the CD4 count is back",
+          "Move him to a side room and wait"
+        ], answer: 0 },
+      { type: "mcq", q: "What is the most likely diagnosis?",
+        options: ["Pneumocystis jirovecii pneumonia (PJP)", "Lobar pneumococcal pneumonia", "Acute pulmonary oedema", "Pulmonary embolism"], answer: 0 },
+      { type: "mcq", q: "Which sample is most useful for confirming it?",
+        options: ["Induced sputum or bronchoalveolar lavage for Pneumocystis PCR", "Blood cultures alone", "Urinary pneumococcal antigen", "Sputum Gram stain alone"], answer: 0 },
+      { type: "mcq", q: "What is the first-line treatment?",
+        options: ["High-dose co-trimoxazole", "Amoxicillin plus clarithromycin", "Oral fluconazole", "Doxycycline"], answer: 0 },
+      { type: "mcq", q: "Given PaO₂ 8.4 kPa on air, what adjunctive treatment is indicated?",
+        options: ["Corticosteroids (for example prednisolone), started with the antimicrobial", "Nebulised salbutamol", "Therapeutic anticoagulation", "No adjunct is indicated"], answer: 0 }
+    ],
+    hints: [
+      "HIV does not change the sepsis pathway. A low CD4 widens the differential, but treatment is not delayed.",
+      "Steroids are added when PaO₂ on air is below 9.3 kPa (70 mmHg)."
+    ],
+    teaching: "A HIV diagnosis never derails the ABCDE and sepsis pathway: start the Sepsis Six on time and escalate as normal. A low CD4 widens the differential, for example PJP. Think of PJP in subacute breathlessness with exertional desaturation, bilateral interstitial shadowing and a raised LDH. Confirm with PCR on induced sputum or lavage, but do not delay treatment. Treat with high-dose co-trimoxazole, usually for 21 days, plus corticosteroids when PaO₂ on air is below 9.3 kPa. Pneumocystis pneumonia is an AIDS-defining condition (BHIVA/BASHH/BIA 2020, Appendix 1, Table A1).",
+    key: "Normal ABCDE and sepsis pathway. PJP. Induced sputum or BAL PCR. High-dose co-trimoxazole. Add steroids if PaO2 on air below 9.3 kPa."
+  },
+  {
+    id: 4, name: "Virology corridor", icon: "☎️", sub: "The result", letter: "L", pos: 3,
+    story: "Reactive result confirmed and the HIV team involved.",
+    intro: "The laboratory phones: Mr A’s fourth-generation HIV test is reactive. You are the first doctor to know, and he is waiting in his bay.",
+    objects: [
+      { icon: "☎️", label: "Phone call", text: "The virologist will confirm the result with further assays and asks for a second sample to check the sample’s identity." },
+      { icon: "🛏️", label: "Mr A’s bay", text: "He is alone and asks you what the blood tests showed." },
+      { icon: "📖", label: "Hospital policy", text: "There is an on-call HIV specialist team. HIV results are confidential like any other medical information." }
+    ],
+    stages: [
+      { type: "multi", q: "Which next steps are appropriate?",
+        options: [
+          "Discuss with the on-call HIV team the same day",
+          "Tell Mr A the result in person, in private, with support",
+          "Send a CD4 count and an HIV viral load",
+          "Send a second sample as the laboratory requested",
+          "Wait for his outpatient appointment before telling him",
+          "Tell his family first",
+          "Start every antiretroviral you can think of straight away",
+          "Give him the result by phone through a nurse"
+        ],
+        answers: [0, 1, 2, 3] },
+      { type: "mcq", q: "A different patient had a high-risk exposure 3 weeks ago and has a negative fourth-generation test today. What is the right advice?",
+        options: [
+          "Repeat the test: a negative fourth-generation result only excludes HIV 45 days after exposure",
+          "The negative test excludes HIV",
+          "Repeat the test in 12 months",
+          "No further testing is needed"
+        ], answer: 0 }
+    ],
+    hints: [
+      "Good practice is to tell the patient in person, in private, and to involve the specialist team early.",
+      "The window period for a fourth-generation laboratory test is longer than 3 weeks but shorter than 3 months."
+    ],
+    teaching: "A reactive screening test is confirmed by the laboratory, with a second sample to check identity. Tell the patient in person and in private, involve the HIV team on the same day, and send baseline bloods including CD4 count and viral load. A negative fourth-generation test excludes HIV only 45 days after the last exposure, so recent exposures need a repeat test.",
+    key: "Select: discuss with HIV team, tell patient in person in private, CD4 and viral load, second sample. Repeat test at 45 days after exposure."
+  },
+  {
+    id: 5, name: "Pharmacy", icon: "💊", sub: "Look it up, don’t guess", letter: "E", pos: 7,
+    story: "Drug chart checked against the interaction checker.",
+    intro: "The HIV team plan to start antiretroviral therapy within days. The ward pharmacist asks you to review the drug chart: Mr A also needs a stomach protector, and his wife has brought in a vitamin supplement and his usual herbal remedy. Nobody on the ward is expected to memorise HIV drug interactions. The skill is knowing where to look.",
+    link: { href: "https://www.hiv-druginteractions.org", text: "University of Liverpool HIV Drug Interactions checker" },
+    objects: [
+      { icon: "💻", label: "Computer", text: "The University of Liverpool HIV Drug Interactions checker is free online at hiv-druginteractions.org and as a phone app. You pick the HIV drugs and the other medicine, and it shows a colour-coded result." },
+      { icon: "📞", label: "Pharmacy phone", text: "The HIV pharmacist is part of the ward team and can check interactions, including herbal products and recreational drugs." },
+      { icon: "🌿", label: "Bedside locker", text: "Patients may take herbal products, supplements, over-the-counter medicines and recreational drugs that are not on the drug chart." }
+    ],
+    stages: [
+      { type: "mcq", q: "Another patient on the ward is known to have HIV and was admitted with cellulitis. His antiretrovirals have not been prescribed. What is the best action?",
+        options: [
+          "Continue them promptly, and check for interactions with the Liverpool checker or the HIV pharmacist",
+          "Omit them, since the admission is unrelated",
+          "Wait for the HIV team to review on Monday",
+          "Stop them until the infection has cleared"
+        ], answer: 0 },
+      { type: "mcq", q: "You are about to prescribe a new medicine for a patient who takes antiretrovirals. What do you do first?",
+        options: [
+          "Check the Liverpool HIV drug interactions checker, or ask the HIV pharmacist",
+          "Assume it is fine because it is a common drug",
+          "Ask the patient whether he thinks it will be fine",
+          "Stop the antiretrovirals while he takes it"
+        ], answer: 0 },
+      { type: "match", q: "Match each colour on the checker to its meaning.",
+        options: [
+          "Do not co-administer",
+          "Potential interaction: may need a dose change, a timing change or monitoring",
+          "Potential weak interaction: no extra action needed",
+          "No clinically significant interaction expected",
+          "Interaction unknown: stop the antiretrovirals"
+        ],
+        rows: [
+          { label: "Red", answer: 0 },
+          { label: "Amber", answer: 1 },
+          { label: "Yellow", answer: 2 },
+          { label: "Green", answer: 3 }
+        ] },
+      { type: "multi", q: "What should be included when you check for interactions?",
+        options: [
+          "Prescribed medicines",
+          "Over-the-counter medicines",
+          "Herbal products and supplements",
+          "Recreational drugs",
+          "Inhalers, nasal sprays, creams and injections",
+          "Only tablets on the current drug chart",
+          "Only drugs started in the last 24 hours"
+        ],
+        answers: [0, 1, 2, 3, 4] }
+    ],
+    hints: [
+      "The answer is a place to look, not a fact to memorise.",
+      "Traffic-light logic: red is stop, green is go, and amber means check what to do."
+    ],
+    teaching: "Missed antiretroviral doses on admission cause harm: continue them promptly and check for interactions. Nobody needs to memorise HIV drug interactions. Check the <a href=\"https://www.hiv-druginteractions.org\" target=\"_blank\" rel=\"noopener noreferrer\">University of Liverpool HIV Drug Interactions checker</a> (website and app), or ask the HIV pharmacist, before you start, change or stop any medicine. Red means do not co-administer, amber a potential interaction, yellow a weak one and green none expected. Include over-the-counter products, herbal remedies, recreational drugs and every route of administration. Mini-fact: some antiretrovirals (integrase inhibitors) bind calcium, iron, magnesium and antacids in the gut, so the timing of doses matters.",
+    key: "Continue ART promptly and check interactions. Look it up on the Liverpool checker or ask the HIV pharmacist. Red: do not co-administer. Amber: potential interaction. Yellow: weak. Green: none expected. Check all medicines, herbals, recreational drugs and all routes."
+  },
+  {
+    id: 6, name: "Doctors’ office", icon: "🗂️", sub: "Beyond the HIV result", letter: "O", pos: 4,
+    story: "Baseline screening done, CD4 62.",
+    intro: "Mr A’s confirmatory test is positive. His CD4 count is 62 cells/µL and his viral load is high. Your job now is the rest of the patient.",
+    objects: [
+      { icon: "📊", label: "CD4 report", text: "CD4 count 62 cells/µL. A healthy adult is roughly 500 to 1,500. The CD4 count measures a type of T-helper lymphocyte." },
+      { icon: "🧾", label: "Request form", text: "Baseline bloods at diagnosis include liver and kidney function and screening for other infections that share transmission routes or affect treatment." },
+      { icon: "🏷️", label: "Clinic letter template", text: "Late diagnosis means a CD4 below 350 cells/µL at diagnosis. Advanced HIV means below 200." }
+    ],
+    stages: [
+      { type: "mcq", q: "What does a CD4 count of 62 cells/µL mean?",
+        options: [
+          "Advanced HIV, with a high risk of opportunistic infections",
+          "Normal immune function",
+          "He has an AIDS-related cancer",
+          "He has tuberculosis"
+        ], answer: 0 },
+      { type: "multi", q: "Which infections should be screened for at HIV diagnosis?",
+        options: [
+          "Hepatitis B",
+          "Hepatitis C",
+          "Syphilis",
+          "Other sexually transmitted infections (such as chlamydia and gonorrhoea)",
+          "Tuberculosis (symptoms, risk and testing where indicated)",
+          "Helicobacter pylori",
+          "Lyme disease",
+          "Measles"
+        ],
+        answers: [0, 1, 2, 3, 4] },
+      { type: "mcq", q: "When should antiretroviral therapy be started in a patient with advanced HIV and PJP?",
+        options: [
+          "Timing is decided with the HIV team. It is usually started within weeks, not delayed for months",
+          "Never during an acute infection",
+          "Only once his CD4 count reaches 500",
+          "Only after 6 months of co-trimoxazole"
+        ], answer: 0 }
+    ],
+    hints: [
+      "Hepatitis and sexually transmitted infections share routes of transmission with HIV.",
+      "A CD4 below 200 is called advanced HIV."
+    ],
+    teaching: "A CD4 count below 200 cells/µL is advanced HIV, with a high risk of opportunistic infection, and a diagnosis with a CD4 below 350 is a late diagnosis. At diagnosis screen for hepatitis B and C, syphilis and other sexually transmitted infections, and assess for tuberculosis. Antiretroviral therapy is started with the HIV team, usually within a few weeks of starting treatment for the acute infection rather than being left for outpatients.",
+    key: "CD4 62 = advanced HIV with high risk of opportunistic infections. Screen hepatitis B, hepatitis C, syphilis, other STIs, TB. ART timing decided with the HIV team, usually within weeks."
+  },
+  {
+    id: 7, name: "Side room", icon: "🚪", sub: "Talking, confidentiality and safety", letter: "N", pos: 2,
+    story: "Dignity, confidentiality and safety protected on the ward.",
+    intro: "Mr A knows his diagnosis and is in a side room, frightened. His wife is on the telephone asking what is going on. A foundation doctor asks whether he needs isolating, someone has written a flag above his bed, and another doctor has just had a needlestick injury.",
+    objects: [
+      { icon: "☎️", label: "Telephone", text: "His wife says: “What’s wrong with him? There’s something you’re not telling me.” Mr A has not yet said who he wants to know." },
+      { icon: "📝", label: "Whiteboard", text: "The bed whiteboard and the electronic record both carry the warning: INFECTIOUS RISK – HIV+." },
+      { icon: "🧤", label: "PPE trolley", text: "Standard infection control precautions apply to every patient on the ward." }
+    ],
+    stages: [
+      { type: "mcq", q: "Mr A’s wife asks what he is being treated for. What do you do?",
+        options: [
+          "Do not disclose without his consent. Ask him who he is happy for you to speak to, document it, and offer support to tell her",
+          "Tell her, because she is his wife and may be at risk",
+          "Tell her it is just a chest infection and say no more, without raising it with him",
+          "Let her read his notes"
+        ], answer: 0 },
+      { type: "mcq", q: "What should happen to the “INFECTIOUS RISK – HIV+” warning on the whiteboard and the record?",
+        options: [
+          "Remove it. HIV status does not belong on whiteboards or alerts. Record it in the clinical notes and share it on a need-to-know basis",
+          "Keep it, to protect the staff",
+          "Add a red sticker to the door as well",
+          "Put it on the handover sheet in capital letters"
+        ], answer: 0 },
+      { type: "mcq", q: "Does Mr A need isolation, double gloves or a gown because of his HIV?",
+        options: [
+          "No. Standard infection control precautions are enough for HIV itself",
+          "Yes, strict isolation with full PPE",
+          "Yes, double gloves and a gown for all contact",
+          "Yes, a side room with isolation signage"
+        ], answer: 0 },
+      { type: "mcq", q: "A doctor has a needlestick injury from a needle used on Mr A. What is the first action?",
+        options: [
+          "Encourage bleeding, wash with soap and running water, report it, and get assessed straight away by occupational health or the emergency department",
+          "Squeeze hard and suck the wound",
+          "Scrub the area with bleach",
+          "Finish the shift and report it tomorrow"
+        ], answer: 0 }
+    ],
+    hints: [
+      "Confidentiality belongs to Mr A. Even a partial disclosure needs his consent.",
+      "After a needlestick, post-exposure prophylaxis is time-critical, ideally within hours and no later than 72 hours."
+    ],
+    teaching: "HIV information is confidential, and even a partial disclosure (“it’s just a chest infection”) to family needs the patient’s consent. Ask who he is happy for you to speak to and document it. HIV status should not appear on whiteboards or alerts. HIV itself needs only standard precautions, not isolation. After a sharps injury, encourage bleeding, wash with soap and running water and get assessed straight away: PEP is time-critical (ideally within hours, no later than 72 hours) and the occupational health or emergency department risk assessment decides whether it is needed. Where the source has a sustained undetectable viral load, PEP is generally not recommended, but Mr A has not yet started treatment.",
+    key: "Do not disclose without consent. Remove the HIV flag from whiteboard and alert. Standard precautions only. Needlestick: bleed, wash, report, urgent OH or ED assessment for PEP."
+  },
+  {
+    id: 8, name: "Discharge lounge", icon: "🔓", sub: "Escape to a free life", letter: "C", pos: 5,
+    story: "Discharged with follow-up arranged, and living freely.",
+    intro: "Eleven days later Mr A is going home, taking co-trimoxazole and antiretrovirals. Six months on, his clinic results are back, he has a short admission with cellulitis, and he sends a worried text to the HIV nurse. Help him escape to a free life.",
+    objects: [
+      { icon: "📅", label: "Discharge summary", text: "A HIV clinic appointment is booked. His GP is informed only with his agreement." },
+      { icon: "📱", label: "Mr A’s text message", text: "“My wife is negative. We’ve been together 3 years and we don’t use condoms because my clinic said I can’t pass it on if I’m undetectable. But the nurses are acting like I’m dangerous. Was my clinic wrong? Have I been putting her at risk?”" },
+      { icon: "🧪", label: "The lab result", text: "HIV viral load below 20 copies/mL. CD4 count 520 cells/µL. The record carries the flag: INFECTIOUS RISK – HIV+." },
+      { icon: "🎗️", label: "PrEP and PEP leaflet card", text: "PEP is taken after a recent possible exposure. PrEP is taken to prevent HIV when there is ongoing risk. Check current local access routes." }
+    ],
+    stages: [
+      { type: "mcq", q: "What is essential before Mr A leaves hospital at the first discharge?",
+        options: [
+          "A booked HIV clinic appointment, enough antiretrovirals to last until it, and GP communication only with his consent",
+          "Leave follow-up for his GP to arrange",
+          "Review in 6 months",
+          "Stop the antiretrovirals now that he is well"
+        ], answer: 0 },
+      { type: "mcq", q: "Was his clinic wrong? Has he been putting his wife at risk?",
+        options: [
+          "No. With a viral load sustained below 200 copies/mL (usually over about 6 months, with good adherence) HIV cannot be passed on sexually",
+          "Yes. Condoms are always needed",
+          "He has been taking a risk, but got lucky",
+          "It is impossible to know"
+        ], answer: 0 },
+      { type: "mcq", q: "What does the lab result mean, and what is wrong with the flag?",
+        options: [
+          "The virus is undetectable and the CD4 is healthy: treatment is working and HIV cannot be passed on sexually. The flag is stigmatising and unnecessary",
+          "He is cured and can stop treatment. The flag protects staff",
+          "A CD4 of 520 means advanced HIV. The flag should stay",
+          "The viral load is too low to interpret"
+        ], answer: 0 },
+      { type: "mcq", q: "His wife is HIV negative. When would she need PrEP or PEP?",
+        options: [
+          "PEP only after a recent exposure, ideally within hours and no later than 72 hours. PrEP is for ongoing risk and is not usually needed with an undetectable partner",
+          "Both, every day from now on",
+          "PEP after every sexual encounter",
+          "Never, under any circumstances"
+        ], answer: 0 }
+    ],
+    hints: [
+      "U=U means undetectable equals untransmittable. Look at the threshold and how long it has to last.",
+      "A flag on a record makes a patient feel dangerous. Ask whether the flag changes how any patient is cared for."
+    ],
+    teaching: "Before discharge arrange a booked HIV clinic appointment and an uninterrupted supply of antiretrovirals, and share information with the GP only with consent. U=U: once the viral load has been sustained below 200 copies/mL (usually confirmed over about 6 months, with good adherence), HIV cannot be passed on sexually. U=U covers sexual transmission only and does not protect against other STIs; pregnancy and infant feeding need shared decisions with specialist support. U=U removes shame and fear, simplifies conception, tackles stigma and bears on HIV criminalisation. PEP is for a recent exposure; PrEP is for ongoing risk. Partner notification is confidential and led by sexual health health advisers.",
+    key: "Booked clinic appointment, ART supply, GP only with consent. Clinic was right: U=U below 200 copies/mL sustained about 6 months, sexual transmission only. Lab result: undetectable, healthy CD4, flag is stigmatising. PEP within 72 hours of recent exposure; PrEP for ongoing risk."
+  }
+];
+
+const CXR_SVG = `<svg class="cxr" viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schematic chest X-ray showing bilateral, symmetrical perihilar interstitial shadowing with no effusion">
+  <defs>
+    <filter id="cxrSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="cxrBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="cxrFine" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="0.8"/></filter>
+    <filter id="cxrHaze" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.45" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.93  0 0 0 0 0.93  0 0 0 0 0.95  2.2 0 0 0 -0.85"/>
+      <feGaussianBlur stdDeviation="1.3"/>
+    </filter>
+    <radialGradient id="cxrG1"><stop offset="0" stop-color="#fff"/><stop offset="0.55" stop-color="#999"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <mask id="cxrMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="440">
+      <rect width="400" height="440" fill="#000"/>
+      <ellipse cx="158" cy="212" rx="92" ry="112" fill="url(#cxrG1)"/>
+      <ellipse cx="248" cy="205" rx="84" ry="108" fill="url(#cxrG1)"/>
+    </mask>
+    <clipPath id="cxrLungs">
+      <path d="M190 68C150 58 102 88 82 150C64 212 62 282 76 330C92 362 150 374 190 362Z"/>
+      <path d="M210 68C250 58 298 88 318 150C336 212 338 282 324 330C308 362 250 374 210 362Z"/>
+    </clipPath>
+  </defs>
+  <rect width="400" height="440" fill="#08080a"/>
+  <path d="M30 440L44 210Q52 52 200 34Q348 52 356 210L370 440Z" fill="#2b2b30"/>
+  <g clip-path="url(#cxrLungs)">
+    <rect width="400" height="440" fill="#0e0e11"/>
+    <g fill="none" stroke="#7a7a82" stroke-linecap="round" opacity="0.28" stroke-width="6" filter="url(#cxrSoft)">
+    <path d="M188 92 Q 112 66 58 154"/>
+    <path d="M212 92 Q 288 66 342 154"/>
+    <path d="M188 123 Q 112 97 58 185"/>
+    <path d="M212 123 Q 288 97 342 185"/>
+    <path d="M188 154 Q 112 128 58 216"/>
+    <path d="M212 154 Q 288 128 342 216"/>
+    <path d="M188 185 Q 112 159 58 247"/>
+    <path d="M212 185 Q 288 159 342 247"/>
+    <path d="M188 216 Q 112 190 58 278"/>
+    <path d="M212 216 Q 288 190 342 278"/>
+    <path d="M188 247 Q 112 221 58 309"/>
+    <path d="M212 247 Q 288 221 342 309"/>
+    <path d="M188 278 Q 112 252 58 340"/>
+    <path d="M212 278 Q 288 252 342 340"/>
+    <path d="M188 309 Q 112 283 58 371"/>
+    <path d="M212 309 Q 288 283 342 371"/>
+    </g>
+    <g fill="none" stroke="#7a7a82" stroke-linecap="round" opacity="0.14" stroke-width="5" filter="url(#cxrSoft)">
+    <path d="M70 130 Q 120 180 185 200"/>
+    <path d="M330 130 Q 280 180 215 200"/>
+    <path d="M70 162 Q 120 212 185 232"/>
+    <path d="M330 162 Q 280 212 215 232"/>
+    <path d="M70 194 Q 120 244 185 264"/>
+    <path d="M330 194 Q 280 244 215 264"/>
+    <path d="M70 226 Q 120 276 185 296"/>
+    <path d="M330 226 Q 280 276 215 296"/>
+    <path d="M70 258 Q 120 308 185 328"/>
+    <path d="M330 258 Q 280 308 215 328"/>
+    <path d="M70 290 Q 120 340 185 360"/>
+    <path d="M330 290 Q 280 340 215 360"/>
+    </g>
+    <rect width="400" height="440" filter="url(#cxrHaze)" mask="url(#cxrMask)" opacity="0.62"/>
+    <g fill="none" stroke="#e6e6ea" stroke-linecap="round" opacity="0.30" mask="url(#cxrMask)" filter="url(#cxrFine)">
+      <path d="M158 205 Q 134 214 94 224" stroke-width="1.6"/>
+      <path d="M158 205 Q 139 196 119 182" stroke-width="2.0"/>
+      <path d="M158 205 Q 172 224 201 233" stroke-width="1.8"/>
+      <path d="M158 205 Q 210 219 246 227" stroke-width="1.7"/>
+      <path d="M158 205 Q 168 211 178 233" stroke-width="1.2"/>
+      <path d="M158 205 Q 158 221 160 240" stroke-width="2.0"/>
+      <path d="M158 205 Q 123 204 87 197" stroke-width="1.5"/>
+      <path d="M158 205 Q 159 254 142 291" stroke-width="1.8"/>
+      <path d="M158 205 Q 145 218 139 247" stroke-width="1.9"/>
+      <path d="M158 205 Q 122 236 91 251" stroke-width="2.0"/>
+      <path d="M158 205 Q 189 205 205 205" stroke-width="2.2"/>
+      <path d="M158 205 Q 145 221 127 227" stroke-width="1.3"/>
+      <path d="M158 205 Q 189 223 204 232" stroke-width="1.1"/>
+      <path d="M158 205 Q 151 230 159 244" stroke-width="1.2"/>
+      <path d="M158 205 Q 124 199 102 184" stroke-width="1.2"/>
+      <path d="M158 205 Q 144 184 132 174" stroke-width="1.3"/>
+      <path d="M248 200 Q 284 200 327 186" stroke-width="1.3"/>
+      <path d="M248 200 Q 218 217 182 249" stroke-width="2.2"/>
+      <path d="M248 200 Q 259 220 259 246" stroke-width="1.4"/>
+      <path d="M248 200 Q 267 204 284 217" stroke-width="1.7"/>
+      <path d="M248 200 Q 235 221 206 242" stroke-width="1.7"/>
+      <path d="M248 200 Q 257 191 278 168" stroke-width="2.0"/>
+      <path d="M248 200 Q 252 230 248 244" stroke-width="1.2"/>
+      <path d="M248 200 Q 290 186 329 175" stroke-width="1.1"/>
+      <path d="M248 200 Q 287 214 335 221" stroke-width="1.3"/>
+      <path d="M248 200 Q 260 165 279 141" stroke-width="1.9"/>
+      <path d="M248 200 Q 271 216 292 219" stroke-width="1.7"/>
+      <path d="M248 200 Q 234 232 232 281" stroke-width="1.3"/>
+      <path d="M248 200 Q 224 204 212 212" stroke-width="1.7"/>
+      <path d="M248 200 Q 274 228 286 239" stroke-width="1.8"/>
+    </g>
+  </g>
+  <rect x="184" y="52" width="32" height="330" fill="#3b3b41" opacity="0.55" filter="url(#cxrSoft)"/>
+  <g fill="#585860" opacity="0.5">
+    <rect x="192" y="70" width="16" height="9" rx="2"/><rect x="192" y="87" width="16" height="9" rx="2"/><rect x="192" y="104" width="16" height="9" rx="2"/><rect x="192" y="121" width="16" height="9" rx="2"/><rect x="192" y="138" width="16" height="9" rx="2"/><rect x="192" y="155" width="16" height="9" rx="2"/><rect x="192" y="172" width="16" height="9" rx="2"/><rect x="192" y="189" width="16" height="9" rx="2"/><rect x="192" y="206" width="16" height="9" rx="2"/><rect x="192" y="223" width="16" height="9" rx="2"/><rect x="192" y="240" width="16" height="9" rx="2"/><rect x="192" y="257" width="16" height="9" rx="2"/><rect x="192" y="274" width="16" height="9" rx="2"/><rect x="192" y="291" width="16" height="9" rx="2"/><rect x="192" y="308" width="16" height="9" rx="2"/><rect x="192" y="325" width="16" height="9" rx="2"/><rect x="192" y="342" width="16" height="9" rx="2"/>
+  </g>
+  <path d="M200 52L200 138" stroke="#0e0e11" stroke-width="9" opacity="0.9" filter="url(#cxrSoft)"/>
+  <path d="M118 104Q160 86 194 106" fill="none" stroke="#8a8a92" stroke-width="5" opacity="0.5" stroke-linecap="round" filter="url(#cxrSoft)"/>
+  <path d="M282 104Q240 86 206 106" fill="none" stroke="#8a8a92" stroke-width="5" opacity="0.5" stroke-linecap="round" filter="url(#cxrSoft)"/>
+  <ellipse cx="238" cy="300" rx="62" ry="58" fill="#4a4a51" opacity="0.88" filter="url(#cxrBlur)"/>
+  <ellipse cx="222" cy="262" rx="30" ry="42" fill="#4a4a51" opacity="0.7" filter="url(#cxrBlur)"/>
+  <path d="M60 372Q130 336 190 366L190 440L40 440Z" fill="#43434a" opacity="0.9" filter="url(#cxrSoft)"/>
+  <path d="M210 366Q280 330 342 372L362 440L210 440Z" fill="#43434a" opacity="0.9" filter="url(#cxrSoft)"/>
+  <ellipse cx="292" cy="392" rx="22" ry="11" fill="#17171a" opacity="0.8" filter="url(#cxrSoft)"/>
+  <text x="26" y="62" fill="#f1f1f4" font-family="Arial, sans-serif" font-size="22" font-weight="700">R</text>
+</svg>`;
+
+const CANDIDA_SVG = `<svg class="candida" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of the inside of the mouth showing white plaques on the tongue and palate, typical of oral candidiasis">
+  <defs>
+    <filter id="cdWob" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="3" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="9"/>
+      <feGaussianBlur stdDeviation="0.7"/>
+    </filter>
+    <filter id="cdSoft"><feGaussianBlur stdDeviation="3"/></filter>
+    <radialGradient id="cdCav" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#7a2431"/><stop offset="1" stop-color="#3a0e16"/></radialGradient>
+    <radialGradient id="cdTongue" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#e08a92"/><stop offset="1" stop-color="#b9535f"/></radialGradient>
+  </defs>
+  <rect width="300" height="240" fill="#1b1114"/>
+  <path d="M18 120C40 30 260 30 282 120C260 214 40 214 18 120Z" fill="#b9606a"/>
+  <path d="M34 120C56 48 244 48 266 120C244 200 56 200 34 120Z" fill="url(#cdCav)"/>
+  <ellipse cx="150" cy="82" rx="88" ry="30" fill="#c9737d" opacity="0.85"/>
+  <path d="M104 60Q150 74 196 60" fill="none" stroke="#9c4955" stroke-width="2" opacity="0.7"/>
+  <rect x="62" y="47" width="21" height="26" rx="7" fill="#eee3cf"/><rect x="84" y="43" width="21" height="28" rx="7" fill="#eee3cf"/><rect x="106" y="40" width="21" height="30" rx="7" fill="#eee3cf"/><rect x="128" y="38" width="21" height="31" rx="7" fill="#eee3cf"/><rect x="151" y="38" width="21" height="31" rx="7" fill="#eee3cf"/><rect x="173" y="40" width="21" height="30" rx="7" fill="#eee3cf"/><rect x="195" y="43" width="21" height="28" rx="7" fill="#eee3cf"/><rect x="217" y="47" width="21" height="26" rx="7" fill="#eee3cf"/>
+  <rect x="84" y="197" width="19" height="22" rx="6" fill="#e7dcc7"/><rect x="104" y="200" width="19" height="22" rx="6" fill="#e7dcc7"/><rect x="124" y="202" width="19" height="21" rx="6" fill="#e7dcc7"/><rect x="144" y="202" width="19" height="21" rx="6" fill="#e7dcc7"/><rect x="164" y="200" width="19" height="22" rx="6" fill="#e7dcc7"/><rect x="184" y="197" width="19" height="22" rx="6" fill="#e7dcc7"/>
+  <ellipse cx="150" cy="138" rx="82" ry="50" fill="url(#cdTongue)"/>
+  <path d="M150 100Q146 138 150 178" fill="none" stroke="#9c4452" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+  <g filter="url(#cdSoft)"><ellipse cx="168" cy="158" rx="16" ry="10" transform="rotate(26 168 158)" fill="#b23f4d" opacity="0.45" /><ellipse cx="194" cy="174" rx="12" ry="13" transform="rotate(61 194 174)" fill="#b23f4d" opacity="0.45" /><ellipse cx="186" cy="172" rx="16" ry="12" transform="rotate(127 186 172)" fill="#b23f4d" opacity="0.45" /><ellipse cx="79" cy="136" rx="21" ry="14" transform="rotate(3 79 136)" fill="#b23f4d" opacity="0.45" /><ellipse cx="217" cy="151" rx="16" ry="12" transform="rotate(2 217 151)" fill="#b23f4d" opacity="0.45" /><ellipse cx="145" cy="119" rx="14" ry="14" transform="rotate(167 145 119)" fill="#b23f4d" opacity="0.45" /><ellipse cx="157" cy="145" rx="16" ry="11" transform="rotate(94 157 145)" fill="#b23f4d" opacity="0.45" /><ellipse cx="117" cy="171" rx="13" ry="13" transform="rotate(144 117 171)" fill="#b23f4d" opacity="0.45" /><ellipse cx="190" cy="112" rx="12" ry="15" transform="rotate(16 190 112)" fill="#b23f4d" opacity="0.45" /><ellipse cx="195" cy="111" rx="16" ry="15" transform="rotate(98 195 111)" fill="#b23f4d" opacity="0.45" /><ellipse cx="168" cy="110" rx="13" ry="10" transform="rotate(124 168 110)" fill="#b23f4d" opacity="0.45" /><ellipse cx="106" cy="117" rx="14" ry="9" transform="rotate(178 106 117)" fill="#b23f4d" opacity="0.45" /><ellipse cx="118" cy="175" rx="19" ry="14" transform="rotate(82 118 175)" fill="#b23f4d" opacity="0.45" /><ellipse cx="156" cy="153" rx="12" ry="12" transform="rotate(151 156 153)" fill="#b23f4d" opacity="0.45" /><ellipse cx="106" cy="173" rx="20" ry="14" transform="rotate(19 106 173)" fill="#b23f4d" opacity="0.45" /><ellipse cx="179" cy="175" rx="16" ry="12" transform="rotate(180 179 175)" fill="#b23f4d" opacity="0.45" /><ellipse cx="209" cy="123" rx="24" ry="12" transform="rotate(88 209 123)" fill="#b23f4d" opacity="0.45" /><ellipse cx="148" cy="71" rx="13" ry="8" transform="rotate(68 148 71)" fill="#b23f4d" opacity="0.4" /><ellipse cx="199" cy="91" rx="15" ry="9" transform="rotate(61 199 91)" fill="#b23f4d" opacity="0.4" /><ellipse cx="109" cy="70" rx="16" ry="10" transform="rotate(65 109 70)" fill="#b23f4d" opacity="0.4" /><ellipse cx="179" cy="85" rx="16" ry="10" transform="rotate(137 179 85)" fill="#b23f4d" opacity="0.4" /><ellipse cx="136" cy="83" rx="12" ry="9" transform="rotate(139 136 83)" fill="#b23f4d" opacity="0.4" /><ellipse cx="169" cy="71" rx="18" ry="10" transform="rotate(105 169 71)" fill="#b23f4d" opacity="0.4" /><ellipse cx="101" cy="78" rx="12" ry="10" transform="rotate(83 101 78)" fill="#b23f4d" opacity="0.4" /></g>
+  <g filter="url(#cdWob)"><ellipse cx="168" cy="158" rx="11" ry="6" transform="rotate(26 168 158)" fill="#f3ede4" opacity="0.96" /><ellipse cx="165" cy="159" rx="7" ry="4" transform="rotate(56 165 159)" fill="#ece4d9" opacity="0.95" /><ellipse cx="194" cy="174" rx="7" ry="9" transform="rotate(61 194 174)" fill="#f3ede4" opacity="0.96" /><ellipse cx="200" cy="173" rx="4" ry="6" transform="rotate(91 200 173)" fill="#ece4d9" opacity="0.95" /><ellipse cx="186" cy="172" rx="11" ry="8" transform="rotate(127 186 172)" fill="#f3ede4" opacity="0.96" /><ellipse cx="195" cy="167" rx="6" ry="6" transform="rotate(157 195 167)" fill="#ece4d9" opacity="0.95" /><ellipse cx="79" cy="136" rx="16" ry="10" transform="rotate(3 79 136)" fill="#f3ede4" opacity="0.96" /><ellipse cx="217" cy="151" rx="11" ry="8" transform="rotate(2 217 151)" fill="#f3ede4" opacity="0.96" /><ellipse cx="211" cy="155" rx="7" ry="6" transform="rotate(32 211 155)" fill="#ece4d9" opacity="0.95" /><ellipse cx="145" cy="119" rx="9" ry="10" transform="rotate(167 145 119)" fill="#f3ede4" opacity="0.96" /><ellipse cx="157" cy="145" rx="11" ry="7" transform="rotate(94 157 145)" fill="#f3ede4" opacity="0.96" /><ellipse cx="117" cy="171" rx="8" ry="9" transform="rotate(144 117 171)" fill="#f3ede4" opacity="0.96" /><ellipse cx="190" cy="112" rx="7" ry="11" transform="rotate(16 190 112)" fill="#f3ede4" opacity="0.96" /><ellipse cx="192" cy="117" rx="4" ry="7" transform="rotate(46 192 117)" fill="#ece4d9" opacity="0.95" /><ellipse cx="195" cy="111" rx="11" ry="11" transform="rotate(98 195 111)" fill="#f3ede4" opacity="0.96" /><ellipse cx="191" cy="108" rx="7" ry="7" transform="rotate(128 191 108)" fill="#ece4d9" opacity="0.95" /><ellipse cx="168" cy="110" rx="8" ry="6" transform="rotate(124 168 110)" fill="#f3ede4" opacity="0.96" /><ellipse cx="106" cy="117" rx="9" ry="5" transform="rotate(178 106 117)" fill="#f3ede4" opacity="0.96" /><ellipse cx="105" cy="114" rx="5" ry="4" transform="rotate(208 105 114)" fill="#ece4d9" opacity="0.95" /><ellipse cx="118" cy="175" rx="14" ry="10" transform="rotate(82 118 175)" fill="#f3ede4" opacity="0.96" /><ellipse cx="110" cy="179" rx="8" ry="7" transform="rotate(112 110 179)" fill="#ece4d9" opacity="0.95" /><ellipse cx="156" cy="153" rx="7" ry="8" transform="rotate(151 156 153)" fill="#f3ede4" opacity="0.96" /><ellipse cx="160" cy="157" rx="4" ry="6" transform="rotate(181 160 157)" fill="#ece4d9" opacity="0.95" /><ellipse cx="106" cy="173" rx="15" ry="10" transform="rotate(19 106 173)" fill="#f3ede4" opacity="0.96" /><ellipse cx="99" cy="177" rx="9" ry="7" transform="rotate(49 99 177)" fill="#ece4d9" opacity="0.95" /><ellipse cx="179" cy="175" rx="11" ry="8" transform="rotate(180 179 175)" fill="#f3ede4" opacity="0.96" /><ellipse cx="209" cy="123" rx="19" ry="8" transform="rotate(88 209 123)" fill="#f3ede4" opacity="0.96" /><ellipse cx="148" cy="71" rx="9" ry="5" transform="rotate(68 148 71)" fill="#f3ede4" opacity="0.95" /><ellipse cx="199" cy="91" rx="11" ry="6" transform="rotate(61 199 91)" fill="#f3ede4" opacity="0.95" /><ellipse cx="109" cy="70" rx="12" ry="7" transform="rotate(65 109 70)" fill="#f3ede4" opacity="0.95" /><ellipse cx="179" cy="85" rx="12" ry="7" transform="rotate(137 179 85)" fill="#f3ede4" opacity="0.95" /><ellipse cx="136" cy="83" rx="8" ry="6" transform="rotate(139 136 83)" fill="#f3ede4" opacity="0.95" /><ellipse cx="169" cy="71" rx="14" ry="7" transform="rotate(105 169 71)" fill="#f3ede4" opacity="0.95" /><ellipse cx="101" cy="78" rx="8" ry="7" transform="rotate(83 101 78)" fill="#f3ede4" opacity="0.95" /><ellipse cx="60" cy="118" rx="8" ry="12" transform="rotate(18 60 118)" fill="#efe8de" opacity="0.9" /><ellipse cx="70" cy="135" rx="6" ry="12" transform="rotate(14 70 135)" fill="#efe8de" opacity="0.9" /><ellipse cx="240" cy="120" rx="8" ry="9" transform="rotate(21 240 120)" fill="#efe8de" opacity="0.9" /><ellipse cx="232" cy="137" rx="8" ry="12" transform="rotate(29 232 137)" fill="#efe8de" opacity="0.9" /><ellipse cx="52" cy="128" rx="9" ry="11" transform="rotate(2 52 128)" fill="#efe8de" opacity="0.9" /><ellipse cx="250" cy="128" rx="6" ry="13" transform="rotate(26 250 128)" fill="#efe8de" opacity="0.9" /></g>
+  <ellipse cx="118" cy="116" rx="16" ry="5" fill="#fff" opacity="0.18" transform="rotate(-18 118 116)"/>
+  <ellipse cx="190" cy="124" rx="12" ry="4" fill="#fff" opacity="0.15" transform="rotate(14 190 124)"/>
+</svg>`;
+
+function candidaHTML() {
+  return `<figure class="xray">${CANDIDA_SVG}<figcaption>Mr A’s mouth: a schematic teaching illustration, not a clinical photograph. White plaques on the tongue and palate are typical of oral candidiasis.</figcaption></figure>`;
+}
+
+function xrayHTML() {
+  return `<figure class="xray">${CXR_SVG}<figcaption>Admission chest X-ray: a schematic teaching illustration, not a real radiograph. It shows bilateral, symmetrical perihilar interstitial shadowing, with no effusion and no lobar consolidation.</figcaption></figure>`;
+}
+
+/* ---------- State ---------- */
+let st;
+let timerId = null;
+let SAMPLE = null, TTS = null, COMMENTS = null, ttsOn = false;
+
+function shuffle(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+
+function prepareOrders() {
+  ROOMS.forEach(r => r.stages.forEach(s => {
+    const n = s.type === "order" ? s.items.length : (s.options ? s.options.length : 0);
+    if (s.type === "mcq" || s.type === "multi" || s.type === "order") {
+      const idx = Array.from({ length: n }, (_, i) => i);
+      let o = shuffle(idx);
+      if (s.type === "order") {
+        let guard = 0;
+        while (o.every((v, i) => v === i) && guard++ < 20) o = shuffle(idx);
+      }
+      s._order = o;
+    }
+  }));
+}
+
+function resetState() {
+  st = {
+    screen: "intro", roomId: null, started: false, startTime: 0, elapsed: 0, finished: false,
+    solved: {}, inp: {}, res: {}, msg: {}, clue: {}, seen: {}, hintsShown: {}, hints: 0, attempts: 0, doorMsg: "", chat: {}
+  };
+  prepareOrders();
+}
+
+/* ---------- Helpers ---------- */
+const app = document.getElementById("app");
+const roomById = id => ROOMS.find(r => r.id === id);
+const isUnlocked = id => !!st.review || id === 1 || !!st.solved[id - 1];
+const solvedCount = () => Object.keys(st.solved).length;
+const fmt = sec => String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+
+function getVal(rid, si, s) {
+  const store = st.inp[rid] || (st.inp[rid] = {});
+  if (store[si] === undefined) {
+    store[si] = s.type === "mcq" ? null
+      : (s.type === "multi" || s.type === "order") ? []
+      : s.type === "match" ? s.rows.map(() => null)
+      : s.fields.map(() => "");
+  }
+  return store[si];
+}
+function setVal(rid, si, v) { (st.inp[rid] || (st.inp[rid] = {}))[si] = v; }
+
+function checkStage(s, v) {
+  switch (s.type) {
+    case "mcq": return v === s.answer;
+    case "multi": return v.length === s.answers.length && s.answers.every(a => v.includes(a));
+    case "order": return v.length === s.items.length && v.every((x, i) => x === i);
+    case "match": return s.rows.every((r, i) => v[i] === r.answer);
+    case "num": return s.fields.every((f, i) => v[i] !== "" && Math.abs(parseFloat(v[i]) - f.answer) <= (f.tol || 0));
+  }
+  return false;
+}
+
+/* ---------- Timer & header ---------- */
+function startTimer() {
+  st.started = true;
+  st.startTime = Date.now();
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    if (st.finished) return;
+    st.elapsed = Math.floor((Date.now() - st.startTime) / 1000);
+    const t = document.getElementById("timer");
+    if (t) t.textContent = fmt(st.elapsed);
+  }, 1000);
+  document.getElementById("stats").classList.remove("hidden");
+  updateHeader();
+}
+function updateHeader() {
+  document.getElementById("hintcount").textContent = st.hints;
+  document.getElementById("roomcount").textContent = solvedCount();
+  document.getElementById("timer").textContent = fmt(st.elapsed);
+  const rack = document.getElementById("rack");
+  let html = "";
+  for (let p = 1; p <= ROOMS.length; p++) {
+    const r = ROOMS.find(x => x.pos === p);
+    const on = st.solved[r.id];
+    html += `<span class="${on ? "on" : ""}" title="Letter ${p}">${on ? r.letter : "·"}</span>`;
+  }
+  rack.innerHTML = html;
+}
+
+/* ---------- Mr A: illustrated avatar and AI conversation ---------- */
+const PATIENT_SCENES = {
+  1: {
+    mood: "worried",
+    title: "Take a history from Mr A",
+    task: "Optional practice. Ask about his symptoms and see how he reacts. How would you offer him an HIV test?",
+    opening: "Morning, doctor. I just want to know what’s wrong with me. I’ve been feeling awful for weeks.",
+    summary: "the morning after admission, taking a history and offering an HIV test",
+    scene: "It is the morning after you were admitted to the acute medical unit. The doctor or nurse has come to take a history. You want to know what is wrong and you are worried it is cancer. You do not know your diagnosis. If they explain that an HIV test is a routine part of the work-up for your symptoms and why, you agree. If they imply you must have done something wrong, or seem embarrassed or judgemental, you become guarded and a little defensive. If asked about sexual history you find it a bit embarrassing, but you answer briefly and honestly if you are asked kindly: you have been with your wife for three years, had a few relationships before that, and have never had an HIV test because you never thought you were at risk."
+  },
+  4: {
+    mood: "shocked",
+    title: "Tell Mr A his result",
+    task: "Optional practice. Tell Mr A his result in your own words, in private. Use plain language and notice how he reacts.",
+    opening: "You said you had my blood results. Is it bad news?",
+    summary: "being told in private that his HIV test is positive",
+    scene: "It is two days into your admission. The doctor or nurse has come to tell you your blood test results in a private bay. You do not know the result yet and you wait for them to say it. Once you hear that you have HIV you react realistically: shock, disbelief, fear of dying, worry about your wife, your job and who will find out. You settle slowly if they are clear, honest and kind, say that HIV is treatable and that people on treatment live long healthy lives, and explain that the HIV team will look after you. If they use stigmatising language or myths (for example saying AIDS instead of HIV, or asking in a judgemental way how you got it) you become upset. Ask simple questions one at a time, such as whether you are going to die, whether you could have passed it to your wife, and whether your work has to know."
+  },
+  7: {
+    mood: "afraid",
+    title: "Talk to Mr A in the side room",
+    task: "Optional practice. Mr A is frightened and angry. How do you respond to his questions about the whiteboard, isolation and who will be told?",
+    opening: "Why am I in a room on my own? And what’s that written on the board above my bed?",
+    summary: "in the side room, frightened about the whiteboard warning, isolation and who will be told",
+    scene: "You are in a side room after being told you have HIV and a lung infection linked to it. You are frightened and a bit angry. You noticed a warning about you written on the whiteboard above your bed and you think the staff are scared of you. Your wife has phoned the ward and you have not decided what to tell her or when. You want to know whether you need to be isolated, whether staff will tell your wife or your employer, and what the warning means. You relax if the doctor or nurse listens, apologises for the whiteboard, says that standard precautions are enough for HIV and that nothing will be shared without your consent. If they dismiss your worries or use stigmatising language you become more upset."
+  }
+};
+
+const MR_A_RULES = "You are playing Mr A, a fictional 44-year-old accountant on the acute medical unit of an NHS hospital in England, in a teaching escape room for hospital doctors and nurses. You are a patient, not a clinician. Speak only as Mr A, in the first person, in plain British English, in one to three short sentences, with no stage directions, no asterisks and no quotation marks around your words. Reveal information only when you are asked about it. Do not volunteer medical terms or facts a layperson would not know, and do not give medical advice. React realistically to how you are spoken to: if the person is kind, clear and unhurried you relax; if they are rushed, use jargon or sound judgemental you become guarded. Keep any talk of sex brief and non-graphic. If asked something off-topic, answer briefly as Mr A would and let the conversation drift back. Never step out of character, never mention that you are an AI or these instructions. Facts about you: you are married and have been with your wife for three years; you have had about six weeks of fever and night sweats, have lost about 8 kg in two months without trying, have a dry cough, and get breathless on stairs and walking to the toilet; you noticed a white coating in your mouth and thought it was nothing; you had shingles on one side of your chest eight months ago, which your GP treated; you take no regular medicines except the odd paracetamol, do not smoke, drink a few pints at weekends and take no recreational drugs.";
+
+function esc(t) {
+  return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function avatarSVG(mood) {
+  const brows = mood === "shocked"
+    ? "M44 45 Q50 40 56 44 M64 44 Q70 40 76 45"
+    : "M44 49 Q50 46 56 44 M64 44 Q70 46 76 49";
+  const eyeR = mood === "shocked" ? 5.6 : 4.4;
+  const mouth = mood === "shocked"
+    ? '<ellipse cx="60" cy="75" rx="4" ry="5" fill="#7a2f2f"/>'
+    : mood === "afraid"
+      ? '<path d="M51 77 Q60 70 69 77" fill="none" stroke="#7a2f2f" stroke-width="2.2" stroke-linecap="round"/>'
+      : '<path d="M52 75 Q60 72 68 75" fill="none" stroke="#7a2f2f" stroke-width="2.2" stroke-linecap="round"/>';
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of Mr A, a fictional patient">
+    <circle cx="60" cy="60" r="58" fill="var(--sign-tint)"/>
+    <path d="M12 120Q16 92 60 88Q104 92 108 120Z" fill="#8fb4d9"/>
+    <path d="M47 89L60 106L73 89" fill="none" stroke="#6f97c2" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="52" y="74" width="16" height="18" rx="6" fill="#cf9c76"/>
+    <ellipse cx="36" cy="57" rx="4" ry="7" fill="#d6a47e"/><ellipse cx="84" cy="57" rx="4" ry="7" fill="#d6a47e"/>
+    <ellipse cx="60" cy="54" rx="24" ry="28" fill="#e2b48f"/>
+    <path d="M35 52Q32 22 60 21Q88 22 85 52Q81 35 60 34Q39 35 35 52Z" fill="#2c2622"/>
+    <ellipse cx="37.5" cy="45" rx="2.6" ry="6" fill="#9a9aa0"/><ellipse cx="82.5" cy="45" rx="2.6" ry="6" fill="#9a9aa0"/>
+    <ellipse cx="50" cy="55" rx="5.6" ry="${eyeR}" fill="#fff"/><ellipse cx="70" cy="55" rx="5.6" ry="${eyeR}" fill="#fff"/>
+    <circle cx="50" cy="55.5" r="2.4" fill="#2a2a2a"/><circle cx="70" cy="55.5" r="2.4" fill="#2a2a2a"/>
+    <path d="${brows}" fill="none" stroke="#2c2622" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M45 61Q50 64 55 61M65 61Q70 64 75 61" fill="none" stroke="#c18d6a" stroke-width="1.4" opacity=".6" stroke-linecap="round"/>
+    <path d="M60 57Q57 65 60 67" fill="none" stroke="#b9825e" stroke-width="1.7" stroke-linecap="round"/>
+    ${mouth}
+  </svg>`;
+}
+
+function chatState(rid) {
+  return st.chat[rid] || (st.chat[rid] = { turns: [], pending: "", busy: false, ctl: null, fb: "", fbBusy: false, err: "" });
+}
+
+function chatPanelHTML(r) {
+  const sc = PATIENT_SCENES[r.id];
+  if (!sc) return "";
+  const c = chatState(r.id);
+  const bubbles = [`<div class="msg him"><span>${esc(sc.opening)}</span></div>`]
+    .concat(c.turns.map(t => `<div class="msg ${t.role === "user" ? "me" : "him"}"><span>${esc(t.content)}</span></div>`));
+  if (c.busy) bubbles.push(`<div class="msg him" id="pending"><span>${c.pending ? esc(c.pending) : "Mr A is thinking…"}</span></div>`);
+  const userTurns = c.turns.filter(t => t.role === "user").length;
+  const live = SAMPLE ? `
+    <div class="chat-input">
+      <input id="chatin" type="text" maxlength="400" placeholder="Say something to Mr A…" autocomplete="off" aria-label="Your message to Mr A" ${c.busy ? "disabled" : ""}>
+      <button type="button" class="btn" data-act="chat-send" data-r="${r.id}" ${c.busy ? "disabled" : ""}>Send</button>
+      ${c.busy ? `<button type="button" class="btn ghost" data-act="chat-stop" data-r="${r.id}">Stop</button>` : ""}
+    </div>
+    <div class="chat-tools">
+      ${TTS ? `<label class="tts"><input type="checkbox" id="ttsbox" ${ttsOn ? "checked" : ""}> Read Mr A’s replies aloud</label>` : ""}
+      <button type="button" class="btn ghost" data-act="chat-fb" data-r="${r.id}" ${userTurns < 2 || c.busy || c.fbBusy ? "disabled" : ""}>Get feedback on my conversation</button>
+    </div>` : `<p class="notice">Mr A can only talk when this page is opened in Claude. The rest of the room works without him.</p>`;
+  const fb = c.fbBusy && !c.fb ? `<div class="feedback"><strong>Feedback</strong><p>Thinking…</p></div>`
+    : c.fb ? `<div class="feedback"><strong>Feedback</strong><p>${esc(c.fb).replace(/\n+/g, "</p><p>")}</p></div>` : "";
+  return `
+    <div class="panel chat" id="chatpanel">
+      <div class="chat-head"><div class="avatar">${avatarSVG(sc.mood)}</div><div><h3>${sc.title}</h3><p>${sc.task}</p></div></div>
+      <div class="log" id="chatlog" aria-live="polite">${bubbles.join("")}</div>
+      ${live}
+      ${c.err ? `<p class="fb bad">${esc(c.err)}</p>` : ""}
+      ${fb}
+      <p class="notice">Mr A is a fictional character played by Claude. Never type real patient or staff information. This conversation is practice and does not affect the lock.</p>
+    </div>`;
+}
+
+function refreshChatPanel() {
+  if (st.screen !== "room") return;
+  const el = document.getElementById("chatpanel");
+  if (!el) return;
+  const r = roomById(st.roomId);
+  const prev = document.getElementById("chatin");
+  const val = prev ? prev.value : "";
+  const had = prev && document.activeElement === prev;
+  el.outerHTML = chatPanelHTML(r);
+  const inp = document.getElementById("chatin");
+  if (inp) { inp.value = val; if (had) inp.focus(); }
+  const log = document.getElementById("chatlog");
+  if (log) log.scrollTop = log.scrollHeight;
+}
+
+function chatErrorCopy(e) {
+  const code = e && e.code;
+  if (code === "not_granted") return "You chose not to allow Claude on this page, so Mr A can’t talk.";
+  if (code === "rate_limited") return "Mr A needs a moment. Try again shortly.";
+  return "Mr A couldn’t answer just now. Try again.";
+}
+
+async function sendChat(rid) {
+  const sc = PATIENT_SCENES[rid];
+  const input = document.getElementById("chatin");
+  const c = chatState(rid);
+  if (!SAMPLE || !input || c.busy) return;
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = "";
+  c.err = "";
+  const prior = c.turns.slice();
+  c.turns.push({ role: "user", content: msg });
+  c.busy = true;
+  c.pending = "";
+  c.ctl = new AbortController();
+  refreshChatPanel();
+
+  const intro = MR_A_RULES + "\n\nThe scene: " + sc.scene +
+    "\n\nYou have already said: “" + sc.opening + "”\n\nReply only with what Mr A says next, as plain text.\n\nThe doctor or nurse says: ";
+  const turns = c.turns.map(t => ({ role: t.role, content: t.content }));
+  turns[0] = { role: "user", content: intro + turns[0].content };
+
+  try {
+    const { text } = await SAMPLE(turns, {
+      cache: false,
+      modelTier: "quick",
+      signal: c.ctl.signal,
+      onText: ({ text }) => {
+        c.pending = text;
+        const p = document.querySelector("#pending span");
+        if (p) p.textContent = text;
+        const log = document.getElementById("chatlog");
+        if (log) log.scrollTop = log.scrollHeight;
+      }
+    });
+    const reply = (text || "").trim() || "…";
+    c.turns.push({ role: "assistant", content: reply });
+    c.busy = false;
+    c.pending = "";
+    refreshChatPanel();
+    const again = document.getElementById("chatin");
+    if (again) again.focus();
+    if (TTS && ttsOn) { TTS.speak(reply).catch(() => {}); }
+  } catch (e) {
+    c.turns = prior;
+    c.busy = false;
+    c.pending = "";
+    if (e && e.code !== "cancelled") c.err = chatErrorCopy(e);
+    refreshChatPanel();
+    const again = document.getElementById("chatin");
+    if (again) { again.value = msg; again.focus(); }
+  }
+}
+
+function stopChat(rid) {
+  const c = chatState(rid);
+  if (c.ctl) c.ctl.abort();
+}
+
+async function chatFeedback(rid) {
+  const sc = PATIENT_SCENES[rid];
+  const c = chatState(rid);
+  if (!SAMPLE || c.fbBusy || c.busy) return;
+  c.fbBusy = true; c.fb = ""; c.err = "";
+  refreshChatPanel();
+  const transcript = "Mr A: " + sc.opening + "\n" + c.turns.map(t => (t.role === "user" ? "Learner: " : "Mr A: ") + t.content).join("\n");
+  const prompt = "You are an experienced hospital consultant giving brief, kind, practical feedback on a communication exercise in a teaching escape room about HIV. A doctor or nurse (the learner) spoke to Mr A, a fictional patient played by an AI. Scene: " + sc.summary + ". Judge only what is in the transcript. Give two things the learner did well, one thing to try next time, and, if relevant, one point about language, stigma, consent or confidentiality. Maximum 120 words. British English. Plain text with short paragraphs, no markdown and no bullet symbols.\n\nTranscript:\n" + transcript;
+  try {
+    const { text } = await SAMPLE(prompt, { cache: false, modelTier: "quick" });
+    c.fb = (text || "").trim();
+  } catch (e) {
+    c.err = chatErrorCopy(e);
+  }
+  c.fbBusy = false;
+  refreshChatPanel();
+}
+
+/* ---------- Views ---------- */
+function introView() {
+  return `
+  <section class="hero">
+    <div class="signboard">
+      <h1 style="font-size:clamp(1.7rem,4.8vw,2.6rem)">A World AIDS Day escape room for medical grand round</h1>
+    </div>
+    <div>
+      <p class="lede">A power cut has locked every door on the hospital’s medical wards, and you need to help. Work through eight rooms, from the acute medical unit to discharge, to get your patient safely home. Each room gives one letter of the eight-letter override word, and the place it belongs in.</p>
+      <div class="patient"><strong>${PATIENT.title}</strong><p>${PATIENT.summary}</p></div>
+    </div>
+    <div class="rules">
+      <h3>How to play</h3>
+      <ul>
+        <li>Rooms open in order. You cannot move on to the next room until you have solved the one you are in.</li>
+        <li>In each room, tap the objects for clues, then answer the lock questions.</li>
+        <li>Rooms 1, 4 and 7 have an optional practice conversation with Mr A, played by Claude, with a feedback button. It does not affect the locks.</li>
+        <li>Hints are free but counted. The fastest team with the fewest hints wins.</li>
+      </ul>
+    </div>
+    <div><button class="btn ribbon" type="button" data-act="begin">Start the clock</button></div>
+  </section>`;
+}
+
+function hubView() {
+  const n = solvedCount();
+  const all = n === ROOMS.length;
+  const done = ROOMS.filter(r => st.solved[r.id]);
+  const story = done.length ? `<ul class="story">${done.map(r => `<li>${r.story}</li>`).join("")}</ul>` : "";
+  const nextId = (ROOMS.find(r => !st.solved[r.id]) || {}).id;
+  const doors = ROOMS.map(r => {
+    const locked = !isUnlocked(r.id);
+    const solved = !!st.solved[r.id];
+    return `
+    <button type="button" class="door ${solved ? "solved" : ""} ${locked ? "locked" : ""} ${r.id === nextId ? "next" : ""}" data-act="open" data-r="${r.id}" ${locked ? "disabled" : ""}>
+      <span class="plate" aria-hidden="true">${r.id}</span>
+      <span><span class="name">${r.name}</span><span class="sub">${solved ? "Solved: letter " + r.letter : locked ? "Locked: solve room " + (r.id - 1) + " first" : r.sub}</span></span>
+      <span class="state" aria-hidden="true">${solved ? "✅" : locked ? "🔒" : r.icon}</span>
+    </button>`;
+  }).join("");
+  return `
+    <div class="patient"><strong>${PATIENT.title}</strong><p>${PATIENT.summary}</p>${story}</div>
+    <h2>The corridor</h2>
+    <p>${all ? "All eight letters are in. The final door is unlocked." : "Eight doors, eight letters. Solve each room to unlock the next. " + n + " of 8 rooms solved."}</p>
+    ${st.review ? `<p class="notice">Review mode is on: all rooms are unlocked so you can read and comment on every page. Nothing you do in review mode is saved.</p>` : ""}
+    <div class="corridor">${doors}</div>
+    <div class="finale ${all ? "ready" : ""}">
+      <p><strong>Final door</strong><br>${all ? "Put the letters in order and type the override word." : "Locked until every room is solved."}</p>
+      <button type="button" class="btn ribbon" data-act="door" ${all || st.review ? "" : "disabled"}>Try the final door</button>
+    </div>`;
+}
+
+function stageHTML(r, si) {
+  const s = r.stages[si];
+  const v = getVal(r.id, si, s);
+  const solved = !!st.solved[r.id];
+  const res = st.res[r.id] ? st.res[r.id][si] : null;
+  const cls = solved || res === true ? "ok" : res === false ? "bad" : "";
+  const dis = solved ? "disabled" : "";
+  let body = "";
+  if (s.type === "mcq") {
+    body = `<div class="opts">` + s._order.map(i => `
+      <button type="button" class="opt ${v === i ? "sel" : ""}" ${dis} data-act="mcq" data-r="${r.id}" data-s="${si}" data-i="${i}" aria-pressed="${v === i}">
+        <span class="box"></span><span>${s.options[i]}</span></button>`).join("") + `</div>`;
+  } else if (s.type === "multi") {
+    body = `<div class="opts">` + s._order.map(i => {
+      const on = v.includes(i);
+      return `<button type="button" class="opt multi ${on ? "sel" : ""}" ${dis} data-act="multi" data-r="${r.id}" data-s="${si}" data-i="${i}" aria-pressed="${on}">
+        <span class="box"></span><span>${s.options[i]}</span></button>`;
+    }).join("") + `</div>`;
+  } else if (s.type === "order") {
+    const slots = s.items.map((_, k) => `
+      <div class="slot ${v[k] !== undefined ? "fill" : ""}"><span class="n">${k + 1}</span><span>${v[k] !== undefined ? s.items[v[k]] : ""}</span></div>`).join("");
+    const pool = s._order.filter(i => !v.includes(i)).map(i =>
+      `<button type="button" class="chip" ${dis} data-act="ord-add" data-r="${r.id}" data-s="${si}" data-i="${i}">${s.items[i]}</button>`).join("");
+    body = `<div class="seq">${slots}</div><div class="pool">${pool}</div>
+      <div class="actions" style="margin-top:0">
+        <button type="button" class="btn ghost" ${dis} data-act="ord-undo" data-r="${r.id}" data-s="${si}">Undo last</button>
+        <button type="button" class="btn ghost" ${dis} data-act="ord-reset" data-r="${r.id}" data-s="${si}">Start again</button>
+      </div>`;
+  } else if (s.type === "match") {
+    body = s.rows.map((row, k) => `
+      <div class="row"><label for="m-${r.id}-${si}-${k}">${row.label}</label>
+        <select id="m-${r.id}-${si}-${k}" ${dis} data-act="match" data-r="${r.id}" data-s="${si}" data-k="${k}">
+          <option value="">Choose…</option>
+          ${s.options.map((o, i) => `<option value="${i}" ${v[k] === i ? "selected" : ""}>${o}</option>`).join("")}
+        </select></div>`).join("");
+  } else if (s.type === "num") {
+    body = s.fields.map((f, k) => `
+      <div class="row"><label for="n-${r.id}-${si}-${k}">${f.label}</label>
+        <input id="n-${r.id}-${si}-${k}" type="number" inputmode="decimal" ${dis} value="${v[k]}" data-act="num" data-r="${r.id}" data-s="${si}" data-k="${k}"></div>`).join("");
+  }
+  const note = solved || res === true ? `<p class="stage-note">Correct</p>` : res === false ? `<p class="stage-note">Not quite. Look at this one again.</p>` : "";
+  return `<div class="stage ${cls}" id="stage-${si}"><h3>${s.q}</h3>${body}${note}</div>`;
+}
+
+function clueHTML(r) {
+  const i = st.clue[r.id];
+  if (i === undefined) return `<div class="clue empty" id="clue"><p>Tap an object to inspect it.</p></div>`;
+  const o = r.objects[i];
+  const body = o.html ? o.html : `<p><strong>${o.label}:</strong> ${o.text}</p>`;
+  const fig = o.figure === "candida" ? candidaHTML() : "";
+  return `<div class="clue" id="clue" role="status">${body}${fig}</div>`;
+}
+function hintsHTML(r) {
+  const n = st.hintsShown[r.id] || 0;
+  const shown = r.hints.slice(0, n).map((h, k) => `<div class="hint"><strong>Hint ${k + 1}:</strong> ${h}</div>`).join("");
+  const more = n < r.hints.length && !st.solved[r.id]
+    ? `<button type="button" class="btn ghost" data-act="hint" data-r="${r.id}">${n === 0 ? "Show a hint" : "Show another hint"}</button>` : "";
+  return `<div class="hints" id="hints">${shown}${more}</div>`;
+}
+
+function roomView(r) {
+  const solved = !!st.solved[r.id];
+  const nextRoom = ROOMS.find(x => x.id === r.id + 1);
+  const tiles = r.objects.map((o, i) => `
+    <button type="button" class="tile ${st.clue[r.id] === i ? "on" : ""} ${st.seen[r.id] && st.seen[r.id][i] ? "seen" : ""}" data-act="clue" data-r="${r.id}" data-i="${i}">
+      <span class="em" aria-hidden="true">${o.icon}</span><span class="lab">${o.label}</span></button>`).join("");
+  const stages = r.stages.map((_, i) => stageHTML(r, i)).join("");
+  const win = solved ? `
+    <div class="panel" id="solvedpanel">
+      <div class="solved-box">
+        <div class="win-letter" aria-label="Letter ${r.letter}">${r.letter}</div>
+        <div class="txt">
+          <span class="badge">Room solved</span>
+          <p><strong>Letter ${r.pos} of 8 is ${r.letter}.</strong> It is now in your rack at the top of the screen.</p>
+          <p>${r.teaching}</p>
+        </div>
+      </div>
+      <div class="actions">${nextRoom ? `<button type="button" class="btn ribbon" data-act="open" data-r="${nextRoom.id}">On to room ${nextRoom.id}: ${nextRoom.name}</button>` : `<button type="button" class="btn ribbon" data-act="door">Go to the final door</button>`}<button type="button" class="btn ghost" data-act="hub">Back to the corridor</button></div>
+    </div>` : "";
+  return `
+    <div class="crumb"><button type="button" class="btn ghost" data-act="hub">Back to the corridor</button></div>
+    <div class="room-head">
+      <span class="plate" aria-hidden="true">${r.id}</span>
+      <div><h2>${r.name}</h2>${r.sub ? `<p class="sub">${r.sub}</p>` : ""}</div>
+    </div>
+    <div class="panel">
+      <p>${r.intro}</p>
+      ${r.figure === "cxr" ? xrayHTML() : ""}
+      ${r.link ? `<p><a href="${r.link.href}" target="_blank" rel="noopener noreferrer">${r.link.text}</a></p>` : ""}
+      <h3>Search the room</h3>
+      <div class="tiles">${tiles}</div>
+      ${clueHTML(r)}
+    </div>
+    ${chatPanelHTML(r)}
+    ${win}
+    <div class="panel">
+      <h3>The lock</h3>
+      <div id="stages">${stages}</div>
+      ${solved ? "" : `<div class="actions"><button type="button" class="btn ribbon" data-act="check" data-r="${r.id}">Try the lock</button></div>
+      <p class="fb ${st.msg[r.id] ? "bad" : ""}" id="fb" role="status">${st.msg[r.id] || ""}</p>`}
+      ${hintsHTML(r)}
+    </div>`;
+}
+
+function doorView() {
+  const letters = ROOMS.slice().sort((a, b) => a.pos - b.pos)
+    .map(r => `<div class="ltile"><b>${r.letter}</b><span>Letter ${r.pos}</span></div>`).join("");
+  return `
+    <div class="crumb"><button type="button" class="btn ghost" data-act="hub">Back to the corridor</button></div>
+    <h2>The final door</h2>
+    <p>Know the facts. Challenge the stigma. Treat the person. The door is finally ______. Put the eight letters in position order to spell the override word.</p>
+    <div class="letters">${letters}</div>
+    <div class="actions">
+      <input class="codein" id="code" type="text" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Override word" value="">
+      <button type="button" class="btn ribbon" data-act="unlock">Unlock</button>
+    </div>
+    <p class="fb ${st.doorMsg ? "bad" : ""}" id="fb" role="status">${st.doorMsg}</p>`;
+}
+
+function winView() {
+  const debrief = ROOMS.map(r => `<details><summary>Room ${r.id}: ${r.name}</summary><p>${r.teaching}</p></details>`).join("");
+  return `
+    <div class="signboard">
+      <h1>Door open: you escaped!</h1>
+      <p>The override word was <strong>${FINAL_WORD}</strong>. You escaped the myths, Mr A escaped the hospital, and he is back to living his life.</p>
+      <p><strong>World AIDS Day, 1 December 2026.</strong> Know the facts. Challenge the stigma. Treat the person.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>${fmt(st.elapsed)}</b>Escape time</div>
+      <div class="stat"><b>${st.hints}</b>Hints used</div>
+      <div class="stat"><b>${st.attempts}</b>Lock attempts</div>
+    </div>
+    <h2>Debrief</h2>
+    <p>Open each room to revisit its teaching point. Mr A’s shingles eight months earlier was a missed chance to test. Testing, treatment and prevention only reach everyone when stigma is tackled too.</p>
+    ${debrief}
+    <div class="actions"><button type="button" class="btn" data-act="again">Play again</button></div>`;
+}
+
+function render() {
+  let html = "";
+  if (st.screen === "intro") html = introView();
+  else if (st.screen === "hub") html = hubView();
+  else if (st.screen === "room") html = roomView(roomById(st.roomId));
+  else if (st.screen === "door") html = doorView();
+  else if (st.screen === "win") html = winView();
+  app.innerHTML = html;
+  if (st.started) updateHeader();
+}
+function go(screen, roomId) {
+  if (screen === "room" && !isUnlocked(roomId)) { screen = "hub"; roomId = null; }
+  st.screen = screen;
+  st.roomId = roomId || null;
+  render();
+  window.scrollTo(0, 0);
+  app.focus({ preventScroll: true });
+}
+
+/* ---------- Partial refreshes ---------- */
+function refreshStage(rid, si, focusSel) {
+  const r = roomById(rid);
+  const el = document.getElementById("stage-" + si);
+  if (!el) return;
+  el.outerHTML = stageHTML(r, si);
+  if (focusSel) {
+    const f = document.querySelector(focusSel);
+    if (f) f.focus({ preventScroll: true });
+  }
+}
+
+/* ---------- Actions ---------- */
+function checkRoom(rid) {
+  const r = roomById(rid);
+  st.attempts++;
+  const results = r.stages.map((s, i) => checkStage(s, getVal(rid, i, s)));
+  st.res[rid] = results;
+  const good = results.filter(Boolean).length;
+  if (good === results.length) {
+    st.solved[rid] = true;
+    st.msg[rid] = "";
+    render();
+    const p = document.getElementById("solvedpanel");
+    if (p) p.scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    st.msg[rid] = good + " of " + results.length + " parts correct. The parts outlined in red need another look.";
+    r.stages.forEach((_, i) => refreshStage(rid, i));
+    const fb = document.getElementById("fb");
+    fb.textContent = st.msg[rid];
+    fb.className = "fb bad";
+  }
+}
+
+function unlock() {
+  const input = document.getElementById("code");
+  const v = (input.value || "").trim().toUpperCase();
+  st.attempts++;
+  if (v === FINAL_WORD) {
+    st.finished = true;
+    st.elapsed = Math.floor((Date.now() - st.startTime) / 1000);
+    clearInterval(timerId);
+    document.getElementById("timer").textContent = fmt(st.elapsed);
+    go("win");
+  } else {
+    st.doorMsg = v.length < 8 ? "The override word has 8 letters." : "ACCESS DENIED. Something isn’t right. Go back and check the letters in position order, 1 to 8.";
+    const fb = document.getElementById("fb");
+    fb.textContent = st.doorMsg;
+    fb.className = "fb bad";
+    input.focus();
+  }
+}
+
+function showKey() {
+  const items = ROOMS.map(r => `<li><strong>Room ${r.id}, ${r.name} (letter ${r.pos}: ${r.letter}).</strong> ${r.key}</li>`).join("");
+  const m = document.getElementById("modal");
+  m.innerHTML = `<div class="modal"><h2 id="modal-title">Facilitator answer key</h2>
+    <p>Final word: <strong>${FINAL_WORD}</strong>. Letters by position: ${ROOMS.slice().sort((a, b) => a.pos - b.pos).map(r => r.letter).join(", ")}.</p>
+    <ol>${items}</ol>
+    <div class="actions"><button type="button" class="btn" data-act="closekey" id="closekey">Close</button></div></div>`;
+  m.classList.remove("hidden");
+  document.getElementById("closekey").focus();
+}
+function hideKey() { document.getElementById("modal").classList.add("hidden"); }
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-act]");
+  if (!t) return;
+  const act = t.dataset.act;
+  const rid = t.dataset.r ? +t.dataset.r : null;
+  const si = t.dataset.s !== undefined ? +t.dataset.s : null;
+  const i = t.dataset.i !== undefined ? +t.dataset.i : null;
+  const sel = (a) => `[data-act="${a}"][data-r="${rid}"][data-s="${si}"][data-i="${i}"]`;
+
+  switch (act) {
+    case "begin": startTimer(); go("hub"); break;
+    case "hub": go("hub"); break;
+    case "open": if (isUnlocked(rid)) go("room", rid); break;
+    case "door": go("door"); break;
+    case "unlock": unlock(); break;
+    case "again": clearInterval(timerId); resetState(); document.getElementById("stats").classList.add("hidden"); go("intro"); break;
+    case "key": showKey(); break;
+    case "review": st.review = true; if (!st.started) startTimer(); go("hub"); break;
+    case "comment": {
+      if (!COMMENTS) break;
+      const target = document.querySelector("#app .room-head") || document.querySelector("#app h2") || document.querySelector("#app h1") || app;
+      COMMENTS.openComposer({ element: target }).catch(err => {
+        if (err && ["unavailable", "not_granted", "forbidden"].includes(err.code)) {
+          COMMENTS = null;
+          document.getElementById("cbtn").classList.add("hidden");
+        }
+      });
+      break;
+    }
+    case "closekey": hideKey(); break;
+    case "clue": {
+      st.clue[rid] = i;
+      (st.seen[rid] || (st.seen[rid] = {}))[i] = true;
+      const r = roomById(rid);
+      document.getElementById("clue").outerHTML = clueHTML(r);
+      document.querySelectorAll(".tile").forEach((b, k) => {
+        b.classList.toggle("on", k === i);
+        if (k === i) b.classList.add("seen");
+      });
+      break;
+    }
+    case "hint": {
+      const r = roomById(rid);
+      st.hintsShown[rid] = (st.hintsShown[rid] || 0) + 1;
+      st.hints++;
+      document.getElementById("hints").outerHTML = hintsHTML(r);
+      updateHeader();
+      break;
+    }
+    case "check": checkRoom(rid); break;
+    case "chat-send": sendChat(rid); break;
+    case "chat-stop": stopChat(rid); break;
+    case "chat-fb": chatFeedback(rid); break;
+    case "mcq": {
+      setVal(rid, si, i);
+      refreshStage(rid, si, sel("mcq"));
+      break;
+    }
+    case "multi": {
+      const s = roomById(rid).stages[si];
+      const v = getVal(rid, si, s);
+      const k = v.indexOf(i);
+      if (k >= 0) v.splice(k, 1); else v.push(i);
+      refreshStage(rid, si, sel("multi"));
+      break;
+    }
+    case "ord-add": {
+      const s = roomById(rid).stages[si];
+      getVal(rid, si, s).push(i);
+      refreshStage(rid, si);
+      break;
+    }
+    case "ord-undo": {
+      const s = roomById(rid).stages[si];
+      getVal(rid, si, s).pop();
+      refreshStage(rid, si);
+      break;
+    }
+    case "ord-reset": {
+      setVal(rid, si, []);
+      refreshStage(rid, si);
+      break;
+    }
+  }
+});
+
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t && t.id === "ttsbox") {
+    ttsOn = t.checked;
+    if (!ttsOn && TTS) TTS.stop();
+    return;
+  }
+  if (t.dataset && t.dataset.act === "match") {
+    const rid = +t.dataset.r, si = +t.dataset.s, k = +t.dataset.k;
+    const s = roomById(rid).stages[si];
+    getVal(rid, si, s)[k] = t.value === "" ? null : +t.value;
+  }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.act === "num") {
+    const rid = +t.dataset.r, si = +t.dataset.s, k = +t.dataset.k;
+    const s = roomById(rid).stages[si];
+    getVal(rid, si, s)[k] = t.value;
+  }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") hideKey();
+  if (e.key === "Enter" && e.target && e.target.id === "code") unlock();
+  if (e.key === "Enter" && e.target && e.target.id === "chatin") { e.preventDefault(); sendChat(st.roomId); }
+});
+
+resetState();
+render();
+
+if (window.claude && typeof window.claude.use === "function") {
+  window.claude.use("sample").then(fn => { SAMPLE = fn || null; refreshChatPanel(); }).catch(() => {});
+  window.claude.use("tts").then(t => { TTS = t || null; refreshChatPanel(); }).catch(() => {});
+  window.claude.use("comments").then(c => { COMMENTS = c || null; if (COMMENTS) document.getElementById("cbtn").classList.remove("hidden"); }).catch(() => {});
+}
+</script>
+</body>
+</html>
